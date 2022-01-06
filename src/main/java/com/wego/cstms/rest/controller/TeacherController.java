@@ -19,19 +19,23 @@ public class TeacherController {
     }
 
     @RequestMapping("/teachers")
-    public List<Teacher> getUsers(){
+    public List<Teacher> getTeachers() {
         return teacherService.getAllTeachers();
     }
 
+    @RequestMapping(value = "/teachers/{id}")
+    public Teacher getTeacherById(@PathVariable Integer id) {
+        return teacherService.getTeacher(id);
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/teachers")
-    public void registerTeacher(@RequestBody TeacherDto teacherDto){
+    public void registerTeacher(@RequestBody TeacherDto teacherDto) {
         teacherService.addTeacher(teacherDto);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/teachers/{id}")
-    public void unregisterUser(@PathVariable Integer id){
-        teacherService.deleteUser(id);
+    public void deactivateTeacher(@PathVariable Integer id) {
+        teacherService.deleteTeacher(id);
     }
-
 
 }

@@ -10,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-public class TeacherDto {
+public class StudentDto {
 //    private int id;
     private String firstname;
     private String lastname;

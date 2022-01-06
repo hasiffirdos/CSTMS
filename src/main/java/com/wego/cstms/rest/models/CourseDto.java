@@ -14,7 +14,6 @@ import java.util.List;
 public class CourseDto {
 
     private String name;
-    private ArrayList<Integer> teacher;
     private Date createdAt;
     private Date updatedAt;
     private String description;

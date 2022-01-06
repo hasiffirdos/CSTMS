@@ -19,9 +19,25 @@ public class CourseController {
     }
 
     @RequestMapping("/courses")
-    public List<Course> getCourse(){
+    public List<Course> getCourses(){
         return courseService.getAllCourses();
     }
+
+    @RequestMapping("/courses/top-{numberOfCourses}-all-times")
+    public List<Course> getCoursesTopAllTimes(@PathVariable int numberOfCourses){
+        return courseService.getTopAllTimes(numberOfCourses);
+    }
+
+    @RequestMapping("/courses/top-{numberOfCourses}-trending")
+    public List<Course> getCoursesTopTrending(@PathVariable int numberOfCourses){
+        return courseService.getTopTrending(numberOfCourses);
+    }
+
+    @RequestMapping( value = "/courses/{id}")
+    public Course getCourse(@PathVariable Integer id){
+        return courseService.getCourse(id);
+    }
+
 
     @RequestMapping(method = RequestMethod.POST, value = "/courses")
     public void addCourse(@RequestBody CourseDto courseDto){

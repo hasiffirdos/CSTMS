@@ -35,11 +35,11 @@ public class TeacherService {
         teacherRepository.save(teacher);
     }
 
-    public void updateUser(Teacher teacher) {
+    public void updateTeacher(Teacher teacher) {
         teacherRepository.save(teacher);
     }
 
-    public void deleteUser(Integer id) {
+    public void deleteTeacher(Integer id) {
         teacherRepository.deleteById(id);
     }
 }

@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "courses")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,13 +29,9 @@ public class Course {
     private String description;
     private int prerequisite;
     private int views;
-/*
-    uncomment it when you have done with adding CourseContent Model
-    @OneToMany
-    private List<CourseContent> contentId;
-*/
 
-    public Course(CourseDto courseDto, List<Teacher> teachers) {
+
+    public Course(CourseDto courseDto) {
         this.name = courseDto.getName();
         this.createdAt = courseDto.getCreatedAt();
         this.updatedAt = courseDto.getUpdatedAt();

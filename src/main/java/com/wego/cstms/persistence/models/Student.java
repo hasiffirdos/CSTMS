@@ -1,5 +1,6 @@
 package com.wego.cstms.persistence.models;
 
+import com.wego.cstms.rest.models.StudentDto;
 import com.wego.cstms.rest.models.TeacherDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,8 +16,8 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table( name = "teachers")
-public class Teacher {
+@Table(name = "students")
+public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int    id;
@@ -29,14 +30,14 @@ public class Teacher {
     private Date   signupDate;
     private int    age;
 
-    public Teacher(TeacherDto teacherDto) {
-        this.firstname  = teacherDto.getFirstname();
-        this.lastname   = teacherDto.getLastname();
-        this.email      = teacherDto.getEmail();
-        this.password   = teacherDto.getPassword();
-        this.phone      = teacherDto.getPhone();
-        this.dob        = teacherDto.getDob();
+    public Student(StudentDto studentDto) {
+        this.firstname  = studentDto.getFirstname();
+        this.lastname   = studentDto.getLastname();
+        this.email      = studentDto.getEmail();
+        this.password   = studentDto.getPassword();
+        this.phone      = studentDto.getPhone();
+        this.dob        = studentDto.getDob();
         this.signupDate = new Date();
-        this.age        = teacherDto.getAge();
+        this.age        = studentDto.getAge();
     }
 }
