@@ -1,5 +1,8 @@
 package com.wego.cstms.persistence.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.wego.cstms.rest.models.CourseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +34,16 @@ public class Course {
     private int prerequisite;
     private int views;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "enrolledCourses")
+    private List<Student> registeredStudents = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "taughtCourses")
+    private List<Teacher> teachers = new ArrayList<>();
+
+
+
 
     public Course(CourseDto courseDto) {
         this.name = courseDto.getName();
@@ -41,5 +55,9 @@ public class Course {
         this.prerequisite = courseDto.getPrerequisite();
         this.views = courseDto.getViews();
     }
+
+//    public void addStudent(Student student){
+//        this.registeredStudents.add(student);
+//    }
 }
 

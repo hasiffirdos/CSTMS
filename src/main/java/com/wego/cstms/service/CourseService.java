@@ -2,6 +2,7 @@ package com.wego.cstms.service;
 
 
 import com.wego.cstms.persistence.models.Course;
+import com.wego.cstms.persistence.models.Student;
 import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.persistence.repositories.TeacherRepository;
 import com.wego.cstms.rest.models.CourseDto;
@@ -64,5 +65,9 @@ public class CourseService {
 
     public void deleteCourse(Integer id) {
         courseRepository.deleteById(id);
+    }
+
+    public List<Student> getRegisteredStudents(int courseId) {
+        return courseRepository.findById(courseId).get().getRegisteredStudents();
     }
 }

@@ -1,11 +1,13 @@
 package com.wego.cstms.rest.controller;
 
 import com.wego.cstms.persistence.models.Course;
+import com.wego.cstms.persistence.models.Student;
 import com.wego.cstms.rest.models.CourseDto;
 import com.wego.cstms.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -44,10 +46,29 @@ public class CourseController {
         courseService.addCourse(courseDto);
     }
 
+//    @RequestMapping(method = RequestMethod.POST, value = "/courses/{courseId}/students/{studentId}/")
+//    public void enrollCourse(@RequestBody CourseDto courseDto, @PathVariable int studentId, @PathVariable int courseId){
+//        Student std = new Student();
+//        std.setId(studentId);
+//        Course course = new Course();
+//        course.setId(courseId);
+//        std.enrollCourse(course);
+////        Student student = new Student();
+////        student.setEnrolledCourses(new Sou);
+//        studentRepository.addCourse(courseDto);
+//    }
+
     @RequestMapping(method = RequestMethod.DELETE, value = "/courses/{id}")
     public void deleteCourse(@PathVariable Integer id){
         courseService.deleteCourse(id);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/courses/{courseId}/registered-students")
+    public List<Student> getRegisteredStudents(@PathVariable int courseId){
+        return courseService.getRegisteredStudents(courseId);
+    }
+
+
 
 
 }

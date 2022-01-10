@@ -1,6 +1,7 @@
 package com.wego.cstms.service;
 
 
+import com.wego.cstms.persistence.models.Course;
 import com.wego.cstms.persistence.models.Teacher;
 import com.wego.cstms.persistence.repositories.TeacherRepository;
 import com.wego.cstms.rest.models.TeacherDto;
@@ -41,5 +42,9 @@ public class TeacherService {
 
     public void deleteTeacher(Integer id) {
         teacherRepository.deleteById(id);
+    }
+
+    public List<Course> getTeacherCourses(int teacherId) {
+        return teacherRepository.findById(teacherId).get().getTaughtCourses();
     }
 }

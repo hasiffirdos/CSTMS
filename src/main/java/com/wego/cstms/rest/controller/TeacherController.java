@@ -1,5 +1,6 @@
 package com.wego.cstms.rest.controller;
 
+import com.wego.cstms.persistence.models.Course;
 import com.wego.cstms.persistence.models.Teacher;
 import com.wego.cstms.rest.models.TeacherDto;
 import com.wego.cstms.service.TeacherService;
@@ -36,6 +37,11 @@ public class TeacherController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/teachers/{id}")
     public void deactivateTeacher(@PathVariable Integer id) {
         teacherService.deleteTeacher(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST,value = "/teachers/{teacherId}/course/")
+    public List<Course> getTeacherCourses(@PathVariable int teacherId){
+        return teacherService.getTeacherCourses(teacherId);
     }
 
 }

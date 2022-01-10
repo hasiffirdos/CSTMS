@@ -1,6 +1,7 @@
 package com.wego.cstms.service;
 
 
+import com.wego.cstms.persistence.models.Course;
 import com.wego.cstms.persistence.models.Student;
 import com.wego.cstms.persistence.repositories.StudentRepository;
 import com.wego.cstms.rest.models.StudentDto;
@@ -42,5 +43,9 @@ public class StudentService {
 
     public void deleteStudent(Integer id) {
         studentRepository.deleteById(id);
+    }
+
+    public List<Course> getEnrolledCourses(int studentId) {
+        return studentRepository.findById(studentId).get().getEnrolledCourses();
     }
 }
