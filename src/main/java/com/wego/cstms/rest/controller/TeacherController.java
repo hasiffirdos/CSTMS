@@ -8,9 +8,11 @@ import com.wego.cstms.rest.models.CourseDto;
 import com.wego.cstms.rest.models.TeacherDto;
 import com.wego.cstms.service.ContentService;
 import com.wego.cstms.service.CourseService;
+import com.wego.cstms.service.FilesStorageService;
 import com.wego.cstms.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,15 +22,18 @@ public class TeacherController {
     private final TeacherService teacherService;
     private final CourseService courseService;
     private final ContentService contentService;
+    private final FilesStorageService filesStorageService;
 
 
     @Autowired
     public TeacherController(TeacherService teacherService,
                              CourseService courseService,
-                             ContentService contentService) {
+                             ContentService contentService,
+                             FilesStorageService filesStorageService) {
         this.teacherService = teacherService;
         this.courseService = courseService;
         this.contentService = contentService;
+        this.filesStorageService = filesStorageService;
     }
 
     @RequestMapping("/teachers")
@@ -78,12 +83,22 @@ public class TeacherController {
     @RequestMapping( method = RequestMethod.POST, value = "/teachers/{teacherId}/courses/{courseId}/course-contents")
     public void addCourseContent(@RequestBody CourseContentDto courseContentDto,
                                  @PathVariable Integer courseId,
-                                 @PathVariable int teacherId){
-
+                                 @PathVariable int teacherId
+                                 ){
 
         contentService.addCourseContent(courseContentDto, courseId);
     }
+    @RequestMapping( method = RequestMethod.POST, value = "/teachers/{teacherId}/courses/{courseId}/course-contentsfile")
+    public void addCourseContentwithfile(@RequestParam("name") String name,
+                                 @RequestParam("content-file") MultipartFile file){
 
+        try {
+            filesStorageService.save(file);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+//        contentService.addCourseContent(courseContentDto, courseId);
+    }
 
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/teachers/{teacherId}/courses/{courseId}/course-contents/{courseContentId}")
