@@ -1,8 +1,7 @@
 package com.wego.cstms.persistence.models;
 
-import com.wego.cstms.persistence.repositories.CourseContentRepository;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wego.cstms.rest.models.CourseContentDto;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,28 +9,33 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class CourseContent {
 
+@Entity
+@Setter
+@Getter
+//@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "course_contents")
+public class CourseContent {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String filename;
-    private String fileType;
-    private Date createDate;
+    private String filetype;
+    private Date create_at;
     private String description;
 
+    @JsonIgnore
     @ManyToOne
     private Course course;
 
+
     public CourseContent(CourseContentDto courseContentDto) {
-        this.filename = courseContentDto.getFilename();
-        this.fileType = courseContentDto.getFileType();
-        this.createDate = courseContentDto.getCreateDate();
+
+        this.filename = courseContentDto.getFileName();
+        this.filetype = courseContentDto.getFileType();
+        this.create_at = new Date();
         this.description = courseContentDto.getDescription();
     }
 }
+

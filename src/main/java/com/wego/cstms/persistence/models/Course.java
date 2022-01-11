@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "courses")
 public class Course {
@@ -43,8 +43,6 @@ public class Course {
     private List<Teacher> teachers = new ArrayList<>();
 
 
-
-
     public Course(CourseDto courseDto) {
         this.name = courseDto.getName();
         this.createdAt = courseDto.getCreatedAt();
@@ -56,8 +54,5 @@ public class Course {
         this.views = courseDto.getViews();
     }
 
-//    public void addStudent(Student student){
-//        this.registeredStudents.add(student);
-//    }
 }
 

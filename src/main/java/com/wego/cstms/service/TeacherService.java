@@ -4,6 +4,7 @@ package com.wego.cstms.service;
 import com.wego.cstms.persistence.models.Course;
 import com.wego.cstms.persistence.models.Teacher;
 import com.wego.cstms.persistence.repositories.TeacherRepository;
+import com.wego.cstms.rest.models.CourseDto;
 import com.wego.cstms.rest.models.TeacherDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,11 @@ public class TeacherService {
 
     public List<Course> getTeacherCourses(int teacherId) {
         return teacherRepository.findById(teacherId).get().getTaughtCourses();
+    }
+
+    public void addTeachersCourse(CourseDto courseDto, int teacherId){
+        Teacher teacher = teacherRepository.findById(teacherId).get();
+        teacher.getTaughtCourses().add(new Course(courseDto));
+        teacherRepository.save(teacher);
     }
 }

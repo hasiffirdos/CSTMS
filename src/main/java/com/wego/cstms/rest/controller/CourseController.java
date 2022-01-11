@@ -2,22 +2,24 @@ package com.wego.cstms.rest.controller;
 
 import com.wego.cstms.persistence.models.Course;
 import com.wego.cstms.persistence.models.Student;
+import com.wego.cstms.persistence.models.Teacher;
 import com.wego.cstms.rest.models.CourseDto;
 import com.wego.cstms.service.CourseService;
+import com.wego.cstms.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
 public class CourseController {
 
     private final CourseService courseService;
-
+    private final TeacherService teacherService;
     @Autowired
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService, TeacherService teacherService) {
         this.courseService = courseService;
+        this.teacherService = teacherService;
     }
 
     @RequestMapping("/courses")
@@ -40,11 +42,6 @@ public class CourseController {
         return courseService.getCourse(id);
     }
 
-
-    @RequestMapping(method = RequestMethod.POST, value = "/courses")
-    public void addCourse(@RequestBody CourseDto courseDto){
-        courseService.addCourse(courseDto);
-    }
 
 //    @RequestMapping(method = RequestMethod.POST, value = "/courses/{courseId}/students/{studentId}/")
 //    public void enrollCourse(@RequestBody CourseDto courseDto, @PathVariable int studentId, @PathVariable int courseId){
