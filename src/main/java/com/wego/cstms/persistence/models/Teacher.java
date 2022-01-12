@@ -23,6 +23,9 @@ public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int    id;
+//    private String userName;
+//    private boolean active;
+//    private String roles;
     private String firstname;
     private String lastname;
     private String email;
@@ -50,5 +53,6 @@ public class Teacher {
         this.dob        = teacherDto.getDob();
         this.signupDate = new Date();
         this.age        = teacherDto.getAge();
+
     }
 }
