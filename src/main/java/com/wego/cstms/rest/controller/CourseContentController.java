@@ -1,6 +1,6 @@
 package com.wego.cstms.rest.controller;
 
-import com.wego.cstms.persistence.models.CourseContent;
+import com.wego.cstms.persistence.Entities.CourseContent;
 import com.wego.cstms.rest.models.CourseContentDto;
 import com.wego.cstms.service.ContentService;
 import com.wego.cstms.service.CourseService;

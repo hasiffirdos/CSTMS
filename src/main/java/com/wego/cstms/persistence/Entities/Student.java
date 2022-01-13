@@ -1,10 +1,7 @@
-package com.wego.cstms.persistence.models;
+package com.wego.cstms.persistence.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.wego.cstms.rest.models.StudentDto;
-import com.wego.cstms.rest.models.TeacherDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

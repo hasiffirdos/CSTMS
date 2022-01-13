@@ -1,10 +1,15 @@
 package com.wego.cstms.security.auth;
 
+import com.wego.cstms.persistence.Entities.User;
+import com.wego.cstms.security.base.security.ApplicationUserRole;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ApplicationUser implements UserDetails {
 
@@ -34,6 +39,20 @@ public class ApplicationUser implements UserDetails {
         this.isEnabled = isEnabled;
     }
 
+
+    public ApplicationUser(User user) {
+        this.password = user.getPassword();
+
+        this.username = user.getUserName();
+        this.grantedAuthorities = ApplicationUserRole.valueOf(user.getRoles()).getGrantedAuthorities();
+//        this.grantedAuthorities = Arrays.stream(user.getRoles().split(","))
+//                .map(SimpleGrantedAuthority::new)
+//                .collect(Collectors.toSet());
+        this.isAccountNonExpired = true;
+        this.isAccountNonLocked = true;
+        this.isCredentialsNonExpired = true;
+        this.isEnabled = user.isActive();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

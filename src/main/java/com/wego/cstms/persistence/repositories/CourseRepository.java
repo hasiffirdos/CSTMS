@@ -1,7 +1,6 @@
 package com.wego.cstms.persistence.repositories;
 
-import com.wego.cstms.persistence.models.Course;
-import org.springframework.data.domain.Sort;
+import com.wego.cstms.persistence.Entities.Course;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

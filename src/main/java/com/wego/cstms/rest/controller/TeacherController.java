@@ -1,8 +1,8 @@
 package com.wego.cstms.rest.controller;
 
-import com.wego.cstms.persistence.models.Course;
-import com.wego.cstms.persistence.models.CourseContent;
-import com.wego.cstms.persistence.models.Teacher;
+import com.wego.cstms.persistence.Entities.Course;
+import com.wego.cstms.persistence.Entities.CourseContent;
+import com.wego.cstms.persistence.Entities.Teacher;
 import com.wego.cstms.rest.models.CourseContentDto;
 import com.wego.cstms.rest.models.CourseDto;
 import com.wego.cstms.rest.models.TeacherDto;
@@ -11,6 +11,7 @@ import com.wego.cstms.service.CourseService;
 import com.wego.cstms.service.FilesStorageService;
 import com.wego.cstms.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,6 +63,7 @@ public class TeacherController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/teachers/{teacherId}/courses")
+    @PreAuthorize("hasAnyRole(ADMIN,TEACHER)")
     public void addCourse(@RequestBody CourseDto courseDto, @PathVariable int teacherId){
         teacherService.addTeachersCourse(courseDto,teacherId);
         courseService.addCourse(courseDto);
@@ -80,6 +82,7 @@ public class TeacherController {
 
     //    TODO: do change this with uploading file functionality.
 //    uploading course content
+    @PreAuthorize("hasAnyRole(ADMIN,TEACHER)")
     @RequestMapping( method = RequestMethod.POST, value = "/teachers/{teacherId}/courses/{courseId}/course-contents")
     public void addCourseContent(@RequestBody CourseContentDto courseContentDto,
                                  @PathVariable Integer courseId,

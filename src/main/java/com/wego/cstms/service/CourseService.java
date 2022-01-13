@@ -1,8 +1,8 @@
 package com.wego.cstms.service;
 
 
-import com.wego.cstms.persistence.models.Course;
-import com.wego.cstms.persistence.models.Student;
+import com.wego.cstms.persistence.Entities.Course;
+import com.wego.cstms.persistence.Entities.Student;
 import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.persistence.repositories.TeacherRepository;
 import com.wego.cstms.rest.models.CourseDto;

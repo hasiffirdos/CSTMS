@@ -1,4 +1,4 @@
-package com.wego.cstms.persistence.models;
+package com.wego.cstms.persistence.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.wego.cstms.rest.models.TeacherDto;

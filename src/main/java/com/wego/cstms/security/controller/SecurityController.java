@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class SecurityController {
-//    @RequestMapping("/login")
-//    public ResponseEntity<?> Login(@RequestBody UserName){
+//    @RequestMapping("/register")
+//    public void Login(@RequestBody UserName){
 //
 //    }
 }

@@ -1,9 +1,7 @@
 package com.wego.cstms.rest.controller;
 
-import com.wego.cstms.persistence.models.Course;
-import com.wego.cstms.persistence.models.Student;
-import com.wego.cstms.persistence.models.Teacher;
-import com.wego.cstms.rest.models.CourseDto;
+import com.wego.cstms.persistence.Entities.Course;
+import com.wego.cstms.persistence.Entities.Student;
 import com.wego.cstms.service.CourseService;
 import com.wego.cstms.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;

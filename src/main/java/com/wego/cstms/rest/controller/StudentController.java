@@ -1,15 +1,19 @@
 package com.wego.cstms.rest.controller;
 
-import com.wego.cstms.persistence.models.Course;
-import com.wego.cstms.persistence.models.Student;
+import com.wego.cstms.persistence.Entities.Course;
+import com.wego.cstms.persistence.Entities.Student;
+import com.wego.cstms.persistence.Entities.User;
 import com.wego.cstms.rest.models.CourseDto;
 import com.wego.cstms.rest.models.StudentDto;
+import com.wego.cstms.security.base.security.ApplicationUserRole;
 import com.wego.cstms.service.CourseService;
 import com.wego.cstms.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class StudentController {
@@ -34,8 +38,13 @@ public class StudentController {
         return studentService.getStudent(id);
     }
 
+
+//    TODO: only Admin should call this.
     @RequestMapping(method = RequestMethod.POST, value = "/students")
     public void registerStudent(@RequestBody StudentDto studentDto) {
+
+//        var some = ApplicationUserRole.STUDENT.getGrantedAuthorities();
+//        ApplicationUserRole.valueOf("ADMIN").permissions
         studentService.addStudent(studentDto);
     }
 

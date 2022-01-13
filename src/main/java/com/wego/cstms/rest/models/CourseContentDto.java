@@ -1,6 +1,6 @@
 package com.wego.cstms.rest.models;
 
-import com.wego.cstms.persistence.models.Course;
+import com.wego.cstms.persistence.Entities.Course;
 import lombok.Getter;
 import lombok.Setter;
 
