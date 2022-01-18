@@ -44,7 +44,7 @@ public class ApplicationUser implements UserDetails {
         this.password = user.getPassword();
 
         this.username = user.getUserName();
-        this.grantedAuthorities = ApplicationUserRole.valueOf(user.getRoles()).getGrantedAuthorities();
+        this.grantedAuthorities = ApplicationUserRole.valueOf(user.getRole()).getGrantedAuthorities();
 //        this.grantedAuthorities = Arrays.stream(user.getRoles().split(","))
 //                .map(SimpleGrantedAuthority::new)
 //                .collect(Collectors.toSet());

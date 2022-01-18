@@ -8,6 +8,6 @@ CREATE TABLE IF NOT EXISTS users
 
 
 );
-INSERT INTO users (active, password, role, user_name)
-VALUES (true,'$2a$10$cqFno5hmsI/JsmR7lUoF7eUgQhFulv6ZN.9GE14irg5v3JM7t6zb2',
+INSERT INTO users (id,active, password, role, user_name)
+VALUES (1,true,'$2a$10$cqFno5hmsI/JsmR7lUoF7eUgQhFulv6ZN.9GE14irg5v3JM7t6zb2',
         'ADMIN','asiffirdos')

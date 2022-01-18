@@ -45,7 +45,7 @@ public class StudentService {
         User user = new User();
         user.setUserName(studentDto.getFirstname().concat(studentDto.getLastname()));
         user.setPassword(passwordEncoder.encode(studentDto.getPassword()));
-        user.setRoles("STUDENT");
+        user.setRole("STUDENT");
         user.setActive(true);
 
         userRepository.save(user);

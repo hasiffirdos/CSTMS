@@ -44,7 +44,7 @@ public class TeacherService {
         User user = new User();
         user.setUserName(teacher.getFirstname().concat(teacher.getLastname()));
         user.setPassword(passwordEncoder.encode(teacher.getPassword()));
-        user.setRoles("TEACHER");
+        user.setRole("TEACHER");
         user.setActive(true);
 
         userRepository.save(user);
