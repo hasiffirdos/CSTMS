@@ -21,11 +21,7 @@ import java.util.List;
 @Table( name = "teachers")
 public class Teacher {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int    id;
-//    private String userName;
-//    private boolean active;
-//    private String roles;
     private String firstname;
     private String lastname;
     private String email;
@@ -43,6 +39,10 @@ public class Teacher {
 
     )
     private List<Course> taughtCourses = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private User user;
 
     public Teacher(TeacherDto teacherDto) {
         this.firstname  = teacherDto.getFirstname();

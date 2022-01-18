@@ -3,10 +3,13 @@ package com.wego.cstms.service;
 
 import com.wego.cstms.persistence.Entities.Course;
 import com.wego.cstms.persistence.Entities.Teacher;
+import com.wego.cstms.persistence.Entities.User;
 import com.wego.cstms.persistence.repositories.TeacherRepository;
+import com.wego.cstms.persistence.repositories.UserRepository;
 import com.wego.cstms.rest.models.CourseDto;
 import com.wego.cstms.rest.models.TeacherDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,10 +19,14 @@ import java.util.List;
 public class TeacherService {
 
     private final TeacherRepository teacherRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public TeacherService(TeacherRepository teacherRepository) {
+    public TeacherService(TeacherRepository teacherRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.teacherRepository = teacherRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Teacher> getAllTeachers(){
@@ -34,6 +41,14 @@ public class TeacherService {
 
     public void addTeacher(TeacherDto teacherDto) {
         Teacher teacher = new Teacher(teacherDto);
+        User user = new User();
+        user.setUserName(teacher.getFirstname().concat(teacher.getLastname()));
+        user.setPassword(passwordEncoder.encode(teacher.getPassword()));
+        user.setRoles("TEACHER");
+        user.setActive(true);
+
+        userRepository.save(user);
+        teacher.setId(user.getId());
         teacherRepository.save(teacher);
     }
 

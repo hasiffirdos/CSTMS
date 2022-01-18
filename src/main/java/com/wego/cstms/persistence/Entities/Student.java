@@ -21,7 +21,7 @@ import java.util.List;
 @Table(name = "students")
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int    id;
     private String firstname;
     private String lastname;
@@ -40,6 +40,10 @@ public class Student {
 
     )
     private List<Course> enrolledCourses = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private User user;
 
     public Student(StudentDto studentDto) {
         this.firstname  = studentDto.getFirstname();

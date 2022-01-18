@@ -41,13 +41,16 @@ public class AdminService {
     }
 
     public void addAdmin(AdminDto adminDto){
+        Admin admin=new Admin(adminDto);
         User user = new User();
         user.setUserName(adminDto.getFirstname()+adminDto.getLastname());
         user.setPassword(passwordEncoder.encode(adminDto.getPassword()));
         user.setRoles("ADMIN");
         user.setActive(true);
         userRepository.save(user);
-        adminRepository.save(new Admin(adminDto));
+        admin.setId(user.getId());
+
+        adminRepository.save(admin);
 
     }
 

@@ -49,6 +49,7 @@ public class StudentService {
         user.setActive(true);
 
         userRepository.save(user);
+        student.setId(user.getId());
         studentRepository.save(student);
     }
 

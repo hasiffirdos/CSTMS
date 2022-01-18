@@ -22,7 +22,6 @@ import java.util.List;
 @Table( name = "admins")
 public class Admin {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int    id;
     private String firstname;
     private String lastname;
@@ -32,6 +31,10 @@ public class Admin {
     private Date   dob;
     private Date   signupDate;
     private int    age;
+
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private User user;
 
     public Admin(AdminDto adminDto) {
         this.firstname  = adminDto.getFirstname();
