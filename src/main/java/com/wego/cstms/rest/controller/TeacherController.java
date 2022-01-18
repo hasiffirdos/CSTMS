@@ -11,10 +11,14 @@ import com.wego.cstms.service.CourseService;
 import com.wego.cstms.service.FilesStorageService;
 import com.wego.cstms.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -37,10 +41,12 @@ public class TeacherController {
         this.filesStorageService = filesStorageService;
     }
 
+    //    OPEN
     @RequestMapping("/teachers")
     public List<Teacher> getTeachers() {
         return teacherService.getAllTeachers();
     }
+
 
     @RequestMapping(value = "/teachers/{id}")
     public Teacher getTeacherById(@PathVariable Integer id) {
@@ -48,24 +54,27 @@ public class TeacherController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/teachers")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public void registerTeacher(@RequestBody TeacherDto teacherDto) {
         teacherService.addTeacher(teacherDto);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/teachers/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public void deactivateTeacher(@PathVariable Integer id) {
         teacherService.deleteTeacher(id);
     }
 
+    //    OPEN
     @RequestMapping(value = "/teachers/{teacherId}/courses")
-    public List<Course> getTeacherCourses(@PathVariable int teacherId){
+    public List<Course> getTeacherCourses(@PathVariable int teacherId) {
         return teacherService.getTeacherCourses(teacherId);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/teachers/{teacherId}/courses")
-    @PreAuthorize("hasAnyRole(ADMIN,TEACHER)")
-    public void addCourse(@RequestBody CourseDto courseDto, @PathVariable int teacherId){
-        teacherService.addTeachersCourse(courseDto,teacherId);
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    public void addCourse(@RequestBody CourseDto courseDto, @PathVariable int teacherId) {
+        teacherService.addTeachersCourse(courseDto, teacherId);
         courseService.addCourse(courseDto);
     }
 
@@ -73,41 +82,61 @@ public class TeacherController {
 //    Course Content endpoints now on.
 
     @RequestMapping("/teachers/{teacherId}/courses/{courseId}/course-contents")
-    public List<CourseContent> getCoursesContent(@PathVariable int teacherId, @PathVariable int courseId){
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    public List<CourseContent> getCoursesContent(@PathVariable int teacherId, @PathVariable int courseId) {
 
-//        TODO: here, teacher id will be used for security...
+//        TODO: here, teacher id will be used for security... to check if current teacher own this course or not.
         return contentService.getCoursesAllContents(courseId);
     }
+    @GetMapping("courses/{courseId}/course-contents-file/{courseContentId}/Download/")
+    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+        Resource file = filesStorageService.load(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment;filename=\"" + file.getFilename() + "\"").body(file);
 
+    }
 
     //    TODO: do change this with uploading file functionality.
 //    uploading course content
-    @PreAuthorize("hasAnyRole(ADMIN,TEACHER)")
-    @RequestMapping( method = RequestMethod.POST, value = "/teachers/{teacherId}/courses/{courseId}/course-contents")
+    @RequestMapping(method = RequestMethod.POST, value = "/teachers/{teacherId}/courses/{courseId}/course-contents")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public void addCourseContent(@RequestBody CourseContentDto courseContentDto,
                                  @PathVariable Integer courseId,
                                  @PathVariable int teacherId
-                                 ){
+    ) {
 
         contentService.addCourseContent(courseContentDto, courseId);
     }
-    @RequestMapping( method = RequestMethod.POST, value = "/teachers/{teacherId}/courses/{courseId}/course-contentsfile")
-    public void addCourseContentwithfile(@RequestParam("name") String name,
-                                 @RequestParam("content-file") MultipartFile file){
+
+    @RequestMapping(method = RequestMethod.POST, value = "/teachers/{teacherId}/courses/{courseId}/course-contents-file")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    public void addCourseContentWithFile(@RequestParam("file_name") String fileName,
+                                         @RequestParam("file_type") String fileType,
+                                         @RequestParam("description") String description,
+                                         @RequestParam("file") MultipartFile contentFile,
+                                         @PathVariable int courseId,
+                                         @PathVariable int teacherId) {
 
         try {
-            filesStorageService.save(file);
-        }catch (Exception e){
+
+            filesStorageService.save(contentFile,courseId);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-//        contentService.addCourseContent(courseContentDto, courseId);
+        CourseContentDto courseContentDto = new CourseContentDto();
+        courseContentDto.setFileName(fileName);
+        courseContentDto.setFileType(fileType);
+        courseContentDto.setDescription(description);
+        courseContentDto.setCreateAt(new Date());
+        contentService.addCourseContent(courseContentDto, courseId);
     }
 
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/teachers/{teacherId}/courses/{courseId}/course-contents/{courseContentId}")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public void deleteCourse(@PathVariable int courseId,
                              @PathVariable int teacherId,
-                             @PathVariable int courseContentId){
+                             @PathVariable int courseContentId) {
         contentService.deleteCourseContent(courseContentId);
     }
 

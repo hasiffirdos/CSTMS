@@ -29,11 +29,7 @@ public class CourseContentController {
 
 //    TODO: do change this with uploading file functionality.
 //    uploading course content
-    @RequestMapping( method = RequestMethod.POST, value = "/courses/{courseId}/course-contents")
-    public void addCourseContent(@RequestBody CourseContentDto courseContentDto,
-                                 @PathVariable Integer courseId){
-        contentService.addCourseContent(courseContentDto, courseId);
-    }
+//
 
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/courses/{courseId}/course-contents/{courseContentId}")
