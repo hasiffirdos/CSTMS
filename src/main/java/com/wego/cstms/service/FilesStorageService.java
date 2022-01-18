@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -25,10 +26,16 @@ public class FilesStorageService {
         }
     }
 
-    public void save(MultipartFile file){
+    public void save(MultipartFile file,Integer courseId){
         try {
-//            Files.createDirectory(this.root);
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+            String stpath = this.root.toString()+"/"+courseId.toString();
+            Path path = Paths.get(this.root.toString(),courseId.toString());
+            File directory = new File(path.toString());
+            if (!directory.exists()){
+                directory.mkdirs();
+            }
+            File files = new File(stpath,file.getOriginalFilename());
+            Files.copy(file.getInputStream(), files.toPath());
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
