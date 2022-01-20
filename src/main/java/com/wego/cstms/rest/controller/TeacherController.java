@@ -3,9 +3,9 @@ package com.wego.cstms.rest.controller;
 import com.wego.cstms.persistence.Entities.Course;
 import com.wego.cstms.persistence.Entities.CourseContent;
 import com.wego.cstms.persistence.Entities.Teacher;
-import com.wego.cstms.rest.models.CourseContentDto;
-import com.wego.cstms.rest.models.CourseDto;
-import com.wego.cstms.rest.models.TeacherDto;
+import com.wego.cstms.dto.models.CourseContentDto;
+import com.wego.cstms.dto.models.CourseDto;
+import com.wego.cstms.dto.models.TeacherDto;
 import com.wego.cstms.service.ContentService;
 import com.wego.cstms.service.CourseService;
 import com.wego.cstms.service.FilesStorageService;
@@ -43,13 +43,13 @@ public class TeacherController {
 
     //    OPEN
     @RequestMapping("/teachers")
-    public List<Teacher> getTeachers() {
+    public List<TeacherDto> getTeachers() {
         return teacherService.getAllTeachers();
     }
 
 
     @RequestMapping(value = "/teachers/{id}")
-    public Teacher getTeacherById(@PathVariable Integer id) {
+    public TeacherDto getTeacherById(@PathVariable Integer id) {
         return teacherService.getTeacher(id);
     }
 
@@ -60,14 +60,15 @@ public class TeacherController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/teachers/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasUserId(authentication,#id)")
     public void deactivateTeacher(@PathVariable Integer id) {
         teacherService.deleteTeacher(id);
     }
 
     //    OPEN
     @RequestMapping(value = "/teachers/{teacherId}/courses")
-    public List<Course> getTeacherCourses(@PathVariable int teacherId) {
+    @PreAuthorize("hasAnyRole('ADMIN','STUDENT','TEACHER')")
+    public List<CourseDto> getTeacherCourses(@PathVariable int teacherId) {
         return teacherService.getTeacherCourses(teacherId);
     }
 
@@ -82,8 +83,8 @@ public class TeacherController {
 //    Course Content endpoints now on.
 
     @RequestMapping("/teachers/{teacherId}/courses/{courseId}/course-contents")
-    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
-    public List<CourseContent> getCoursesContent(@PathVariable int teacherId, @PathVariable int courseId) {
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER') or @principalSecurity.hasUserId(authentication,#teacherId)")
+    public List<CourseContentDto> getCoursesContent(@PathVariable int teacherId, @PathVariable int courseId) {
 
 //        TODO: here, teacher id will be used for security... to check if current teacher own this course or not.
         return contentService.getCoursesAllContents(courseId);
