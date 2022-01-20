@@ -1,14 +1,12 @@
-package com.wego.cstms.rest.models;
+package com.wego.cstms.dto.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
-import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-
+@Accessors(chain = true)
 @Setter
 @Getter
 public class CourseDto {
@@ -21,10 +19,5 @@ public class CourseDto {
     private float rating;
     private int prerequisite;
     private int views;
-/*
-    uncomment it when you have done with adding CourseContent Model
-    @OneToMany
-    private List<CourseContent> contentId;
-*/
 }
 

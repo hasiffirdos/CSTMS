@@ -1,14 +1,18 @@
-package com.wego.cstms.rest.models;
+package com.wego.cstms.dto.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
 
 @Getter
 @Setter
+@Accessors(chain = true)
+@NoArgsConstructor
 @AllArgsConstructor
 public class TeacherDto {
 //    private int id;
