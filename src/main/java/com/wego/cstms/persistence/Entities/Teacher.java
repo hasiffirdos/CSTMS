@@ -1,11 +1,12 @@
 package com.wego.cstms.persistence.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.wego.cstms.rest.models.TeacherDto;
+import com.wego.cstms.dto.models.TeacherDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 
 
 @Entity
+@Accessors(chain = true)
 @Setter
 @Getter
 @AllArgsConstructor
@@ -44,15 +46,4 @@ public class Teacher {
     @JoinColumn(name = "id", referencedColumnName = "id")
     private User user;
 
-    public Teacher(TeacherDto teacherDto) {
-        this.firstname  = teacherDto.getFirstname();
-        this.lastname   = teacherDto.getLastname();
-        this.email      = teacherDto.getEmail();
-        this.password   = teacherDto.getPassword();
-        this.phone      = teacherDto.getPhone();
-        this.dob        = teacherDto.getDob();
-        this.signupDate = new Date();
-        this.age        = teacherDto.getAge();
-
-    }
 }

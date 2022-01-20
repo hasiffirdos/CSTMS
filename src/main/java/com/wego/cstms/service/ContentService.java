@@ -1,10 +1,12 @@
 package com.wego.cstms.service;
 
 
+import com.wego.cstms.dto.mapper.CourseContentMapper;
+import com.wego.cstms.persistence.Entities.Course;
 import com.wego.cstms.persistence.Entities.CourseContent;
 import com.wego.cstms.persistence.repositories.CourseContentRepository;
 import com.wego.cstms.persistence.repositories.CourseRepository;
-import com.wego.cstms.rest.models.CourseContentDto;
+import com.wego.cstms.dto.models.CourseContentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +25,18 @@ public class ContentService {
         this.courseRepository = courseRepository;
     }
 
-    public List<CourseContent> getCoursesAllContents(int id) {
-        List<CourseContent> courseContent = new ArrayList<>();
-        courseContentRepository.findByCourseId(id).forEach(courseContent::add);
-        return courseContent;
+    public List<CourseContentDto> getCoursesAllContents(int id) {
+        List<CourseContentDto> courseContents = new ArrayList<>();
+        courseContentRepository.findByCourseId(id).forEach(courseContent -> {
+            courseContents.add(CourseContentMapper.toCourseContentDto(courseContent));
+        });
+        return courseContents;
     }
 
 
     public void addCourseContent(CourseContentDto courseContentDto, int courseId) {
 
-        CourseContent courseContent = new CourseContent(courseContentDto);
+        CourseContent courseContent = CourseContentMapper.toCourseContent(courseContentDto);
         courseContent.setCourse(courseRepository.findById(courseId).get());
         courseContentRepository.save(courseContent);
     }

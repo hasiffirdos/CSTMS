@@ -1,16 +1,11 @@
 package com.wego.cstms.persistence.Entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.wego.cstms.rest.models.TeacherDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 
 @Entity

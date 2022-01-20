@@ -32,7 +32,6 @@ public class ApplicationUserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByUserName(username);
-//        Set<SimpleGrantedAuthority> simpleGrantedAuthority = ApplicationUserRole.values()[1].getGrantedAuthorities();
         user.orElseThrow(()-> new UsernameNotFoundException("Not Found: "+ username));
         return user.map(ApplicationUser::new).get();
 

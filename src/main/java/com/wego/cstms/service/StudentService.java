@@ -1,12 +1,13 @@
 package com.wego.cstms.service;
 
 
+import com.wego.cstms.dto.mapper.StudentMapper;
 import com.wego.cstms.persistence.Entities.Course;
 import com.wego.cstms.persistence.Entities.Student;
 import com.wego.cstms.persistence.Entities.User;
 import com.wego.cstms.persistence.repositories.StudentRepository;
 import com.wego.cstms.persistence.repositories.UserRepository;
-import com.wego.cstms.rest.models.StudentDto;
+import com.wego.cstms.dto.models.StudentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,9 +29,11 @@ public class StudentService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Student> getAllStudents() {
-        List<Student> students = new ArrayList<>();
-        studentRepository.findAll().forEach(students::add);
+    public List<StudentDto> getAllStudents() {
+        List<StudentDto> students = new ArrayList<>();
+        studentRepository.findAll().forEach((student)->{
+            students.add(StudentMapper.toStudentDto(student));
+        });
         return students;
     }
 
@@ -40,7 +43,7 @@ public class StudentService {
 
     public void addStudent(StudentDto studentDto) {
 
-        Student student = new Student(studentDto);
+        Student student = StudentMapper.toStudent(studentDto);
 //        saving user for Authentication
         User user = new User();
         user.setUserName(studentDto.getFirstname().concat(studentDto.getLastname()));

@@ -1,11 +1,12 @@
 package com.wego.cstms.service;
 
 
+import com.wego.cstms.dto.mapper.CourseMapper;
 import com.wego.cstms.persistence.Entities.Course;
 import com.wego.cstms.persistence.Entities.Student;
 import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.persistence.repositories.TeacherRepository;
-import com.wego.cstms.rest.models.CourseDto;
+import com.wego.cstms.dto.models.CourseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,19 +48,14 @@ public class CourseService {
     }
 
     public void addCourse(CourseDto courseDto) {
-//        List<Integer> teachersIds = courseDto.getTeacher();
-//        List<Teacher> teachers = new ArrayList<>();
-//
-//        teacherRepository.findAllById(teachersIds).forEach((teacher) -> {
-//            teachers.add(teacher);
-//        });
-//
-//        Course course = new Course(courseDto, teachers);
-        Course course = new Course(courseDto);
+
+        Course course = CourseMapper.toCourse(courseDto);
         courseRepository.save(course);
     }
 
-    public void updateCourse(Course course) {
+    public void updateCourse(CourseDto courseDto) {
+
+        Course course = CourseMapper.toCourse(courseDto);
         courseRepository.save(course);
     }
 

@@ -1,10 +1,11 @@
 package com.wego.cstms.persistence.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.wego.cstms.rest.models.CourseDto;
+import com.wego.cstms.dto.models.CourseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 
 
 @Entity
+@Accessors(chain = true)
 @Setter
 @Getter
 //@AllArgsConstructor
@@ -40,16 +42,6 @@ public class Course {
     private List<Teacher> teachers = new ArrayList<>();
 
 
-    public Course(CourseDto courseDto) {
-        this.name = courseDto.getName();
-        this.createdAt = courseDto.getCreatedAt();
-        this.updatedAt = courseDto.getUpdatedAt();
-        this.price = courseDto.getPrice();
-        this.rating = courseDto.getRating();
-        this.description = courseDto.getDescription();
-        this.prerequisite = courseDto.getPrerequisite();
-        this.views = courseDto.getViews();
-    }
 
 }
 

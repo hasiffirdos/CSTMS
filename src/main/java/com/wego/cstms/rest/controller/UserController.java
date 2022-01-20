@@ -2,7 +2,7 @@ package com.wego.cstms.rest.controller;
 
 import com.wego.cstms.persistence.Entities.Admin;
 import com.wego.cstms.persistence.Entities.User;
-import com.wego.cstms.rest.models.AdminDto;
+import com.wego.cstms.dto.models.AdminDto;
 import com.wego.cstms.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,19 +1,22 @@
 package com.wego.cstms.persistence.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.wego.cstms.rest.models.CourseContentDto;
+import com.wego.cstms.dto.models.CourseContentDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Date;
 
 
 @Entity
+@Accessors(chain = true)
 @Setter
 @Getter
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "course_contents")
 public class CourseContent {
@@ -30,12 +33,6 @@ public class CourseContent {
     private Course course;
 
 
-    public CourseContent(CourseContentDto courseContentDto) {
 
-        this.filename = courseContentDto.getFileName();
-        this.filetype = courseContentDto.getFileType();
-        this.create_at = new Date();
-        this.description = courseContentDto.getDescription();
-    }
 }
 
