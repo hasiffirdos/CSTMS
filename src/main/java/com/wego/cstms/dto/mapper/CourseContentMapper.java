@@ -11,6 +11,7 @@ import java.util.Date;
 public class CourseContentMapper {
     public static CourseContentDto toCourseContentDto(CourseContent courseContent){
         return new CourseContentDto()
+                .setId(courseContent.getId())
                 .setFileName(courseContent.getFilename())
                 .setCreateAt(courseContent.getCreate_at())
                 .setDescription(courseContent.getDescription())

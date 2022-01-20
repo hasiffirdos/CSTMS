@@ -10,6 +10,7 @@ import java.util.Date;
 public class CourseMapper {
     public static CourseDto toCourseDto(Course course){
         return new CourseDto()
+                .setId(course.getId())
                 .setName(course.getName())
                 .setCreatedAt(course.getCreatedAt())
                 .setPrice(course.getPrice())

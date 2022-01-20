@@ -10,6 +10,7 @@ import java.util.Date;
 public class TeacherMapper {
     public static TeacherDto toTeacherDto(Teacher teacher){
         return new TeacherDto()
+                .setId(teacher.getId())
                 .setFirstname(teacher.getFirstname())
                 .setLastname(teacher.getLastname())
                 .setEmail(teacher.getEmail())

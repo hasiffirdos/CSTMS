@@ -13,6 +13,7 @@ import java.util.Date;
 @Getter
 public class CourseContentDto {
 
+    private int id;
     private String fileName;
     private String fileType;
     private Date createAt;

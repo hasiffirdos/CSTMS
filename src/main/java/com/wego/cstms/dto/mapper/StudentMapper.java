@@ -8,6 +8,7 @@ import java.util.Date;
 public class StudentMapper {
     public static StudentDto toStudentDto(Student student) {
         return new StudentDto()
+                .setId(student.getId())
                 .setFirstname(student.getFirstname())
                 .setLastname(student.getLastname())
                 .setEmail(student.getEmail())

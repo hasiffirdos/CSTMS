@@ -11,6 +11,7 @@ import java.util.Date;
 @Getter
 public class CourseDto {
 
+    private int id;
     private String name;
     private Date createdAt;
     private Date updatedAt;
