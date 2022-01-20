@@ -33,6 +33,11 @@ public class ContentService {
         return courseContents;
     }
 
+    public String getDownloadPath(int courseId, int contentId){
+        CourseContent courseContent = courseContentRepository.findById(contentId).get();
+        return courseId+"/"+courseContent.getFilename();
+    }
+
 
     public void addCourseContent(CourseContentDto courseContentDto, int courseId) {
 
@@ -53,6 +58,7 @@ public class ContentService {
     public void deleteAllCourseContent(Integer courseContentId) {
         courseContentRepository.deleteById(courseContentId);
     }
+
 
 
 }

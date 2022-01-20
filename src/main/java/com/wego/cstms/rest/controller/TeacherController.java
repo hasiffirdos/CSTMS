@@ -92,13 +92,6 @@ public class TeacherController {
         return contentService.getCoursesAllContents(courseId);
     }
 
-    @GetMapping("courses/{courseId}/course-contents-file/{courseContentId}/Download/")
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
-        Resource file = filesStorageService.load(filename);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment;filename=\"" + file.getFilename() + "\"").body(file);
-
-    }
 
     //    TODO: do change this with uploading file functionality.
 //    uploading course content
