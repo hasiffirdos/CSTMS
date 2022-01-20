@@ -2,29 +2,30 @@ package com.wego.cstms.security.principal;
 
 import com.wego.cstms.persistence.Entities.Course;
 import com.wego.cstms.persistence.Entities.Student;
+import com.wego.cstms.persistence.Entities.Teacher;
 import com.wego.cstms.persistence.Entities.User;
 import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.persistence.repositories.StudentRepository;
+import com.wego.cstms.persistence.repositories.TeacherRepository;
 import com.wego.cstms.persistence.repositories.UserRepository;
-import org.hibernate.type.TrueFalseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component("principalSecurity")
 public class PrincipalCheckLayer {
 
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
     private final CourseRepository courseRepository;
 
 
     @Autowired
-    public PrincipalCheckLayer(UserRepository userRepository, StudentRepository studentRepository, CourseRepository courseRepository) {
+    public PrincipalCheckLayer(UserRepository userRepository, StudentRepository studentRepository, TeacherRepository teacherRepository, CourseRepository courseRepository) {
         this.userRepository = userRepository;
         this.studentRepository = studentRepository;
+        this.teacherRepository = teacherRepository;
         this.courseRepository = courseRepository;
     }
 
@@ -40,6 +41,19 @@ public class PrincipalCheckLayer {
         if (hasUserId(authentication,studentId)){
             Student student = studentRepository.findById(studentId).get();
             for (Course course : student.getEnrolledCourses()) {
+                if (course.getId() == courseId) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    public boolean hasCourseOwnership(Authentication authentication, int teacherId, int courseId) {
+        if (hasUserId(authentication,teacherId)){
+            Teacher teacher = teacherRepository.findById(teacherId).get();
+            for (Course course : teacher.getTaughtCourses()) {
                 if (course.getId() == courseId) {
                     return true;
                 }

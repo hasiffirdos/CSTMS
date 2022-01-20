@@ -50,5 +50,9 @@ public class ContentService {
         courseContentRepository.deleteById(courseContentId);
     }
 
+    public void deleteAllCourseContent(Integer courseContentId) {
+        courseContentRepository.deleteById(courseContentId);
+    }
+
 
 }

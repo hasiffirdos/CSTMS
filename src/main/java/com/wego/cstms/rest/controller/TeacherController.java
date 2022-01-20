@@ -43,20 +43,22 @@ public class TeacherController {
 
     //    OPEN
     @RequestMapping("/teachers")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER','STUDENT')")
     public List<TeacherDto> getTeachers() {
         return teacherService.getAllTeachers();
     }
 
 
-    @RequestMapping(value = "/teachers/{id}")
-    public TeacherDto getTeacherById(@PathVariable Integer id) {
-        return teacherService.getTeacher(id);
-    }
-
     @RequestMapping(method = RequestMethod.POST, value = "/teachers")
-    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+//    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public void registerTeacher(@RequestBody TeacherDto teacherDto) {
         teacherService.addTeacher(teacherDto);
+    }
+
+    @RequestMapping(value = "/teachers/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasUserId(authentication,#id)")
+    public TeacherDto getTeacherById(@PathVariable Integer id) {
+        return teacherService.getTeacher(id);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/teachers/{id}")
@@ -76,7 +78,7 @@ public class TeacherController {
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public void addCourse(@RequestBody CourseDto courseDto, @PathVariable int teacherId) {
         teacherService.addTeachersCourse(courseDto, teacherId);
-        courseService.addCourse(courseDto);
+//        courseService.addCourse(courseDto);
     }
 
 
@@ -89,6 +91,7 @@ public class TeacherController {
 //        TODO: here, teacher id will be used for security... to check if current teacher own this course or not.
         return contentService.getCoursesAllContents(courseId);
     }
+
     @GetMapping("courses/{courseId}/course-contents-file/{courseContentId}/Download/")
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         Resource file = filesStorageService.load(filename);
@@ -110,7 +113,7 @@ public class TeacherController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/teachers/{teacherId}/courses/{courseId}/course-contents-file")
-    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasCourseOwnership(authentication,#teacherId,#courseId)")
     public void addCourseContentWithFile(@RequestParam("file_name") String fileName,
                                          @RequestParam("file_type") String fileType,
                                          @RequestParam("description") String description,
@@ -120,7 +123,7 @@ public class TeacherController {
 
         try {
 
-            filesStorageService.save(contentFile,courseId);
+            filesStorageService.save(contentFile, courseId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -133,11 +136,19 @@ public class TeacherController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE,
-            value = "/teachers/{teacherId}/courses/{courseId}/course-contents/{courseContentId}")
-    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+            value = "/teachers/{teacherId}/courses/{courseId}")
+    @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasCourseOwnership(authentication,#teacherId,#courseId) ")
     public void deleteCourse(@PathVariable int courseId,
-                             @PathVariable int teacherId,
-                             @PathVariable int courseContentId) {
+                             @PathVariable int teacherId) {
+        courseService.deleteCourse(courseId);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE,
+            value = "/teachers/{teacherId}/courses/{courseId}/course-contents/{courseContentId}")
+    @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasCourseOwnership(authentication,#teacherId,#courseId) ")
+    public void deleteCourseContent(@PathVariable int courseId,
+                                    @PathVariable int teacherId,
+                                    @PathVariable int courseContentId) {
         contentService.deleteCourseContent(courseContentId);
     }
 

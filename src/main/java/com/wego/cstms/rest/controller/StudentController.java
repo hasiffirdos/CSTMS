@@ -34,19 +34,16 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
-//    OPEN
+    @RequestMapping(method = RequestMethod.POST, value = "/students")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void registerStudent(@RequestBody StudentDto studentDto) {
+        studentService.addStudent(studentDto);
+    }
+//    GET Students Profile
     @RequestMapping(value = "/students/{id}")
     @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasUserId(authentication,#id)")
     public Student getStudentById(@PathVariable Integer id) {
         return studentService.getStudent(id);
-    }
-
-
-//    TODO: only Admin should call this.
-    @RequestMapping(method = RequestMethod.POST, value = "/students")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public void registerStudent(@RequestBody StudentDto studentDto) {
-        studentService.addStudent(studentDto);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/students/{id}")
@@ -55,7 +52,6 @@ public class StudentController {
         studentService.deleteStudent(id);
     }
 
-//    @RequestMapping(method = RequestMethod.POST, value = "/courses/{courseId}/students/{studentId}/enroll-course")
     @RequestMapping(method = RequestMethod.POST, value = "/students/{studentId}/courses/{courseId}/enroll")
     @PreAuthorize("hasAnyRole('ADMIN','STUDENT')  or @principalSecurity.hasUserId(authentication,#studentId)")
     public void enrollCourse(@PathVariable int studentId, @PathVariable int courseId){
@@ -63,8 +59,6 @@ public class StudentController {
         Course course = courseService.getCourse(courseId);
         student.getEnrolledCourses().add(course);
         studentService.updateStudent(student);
-//        course.addStudent(student);
-//        courseService.updateCourse(course);
     }
 
     @RequestMapping(method = RequestMethod.GET,value = "/students/{studentId}/courses")
