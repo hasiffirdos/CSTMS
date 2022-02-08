@@ -48,7 +48,7 @@ public class StudentController {
 //    GET Students Profile
     @RequestMapping(value = "/students/{id}")
     @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasUserId(authentication,#id)")
-    public Student getStudentById(@PathVariable Integer id) {
+    public StudentDto getStudentById(@PathVariable Integer id) {
         return studentService.getStudent(id);
     }
 
@@ -61,19 +61,13 @@ public class StudentController {
     @RequestMapping(method = RequestMethod.POST, value = "/students/{studentId}/courses/{courseId}/enroll")
     @PreAuthorize("hasAnyRole('ADMIN','STUDENT')  or @principalSecurity.hasUserId(authentication,#studentId)")
     public void enrollCourse(@PathVariable int studentId, @PathVariable int courseId){
-        Student student = studentService.getStudent(studentId);
-        Course course = courseService.getCourse(courseId);
-        student.getEnrolledCourses().add(course);
-        studentService.updateStudent(student);
+        studentService.addStudentCourse(studentId,courseId);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/students/{studentId}/courses/{courseId}/opt-out")
     @PreAuthorize("hasAnyRole('ADMIN','STUDENT')  or @principalSecurity.hasUserId(authentication,#studentId)")
     public void optOutCourse(@PathVariable int studentId, @PathVariable int courseId){
-        Student student = studentService.getStudent(studentId);
-        Course course = courseService.getCourse(courseId);
-        student.getEnrolledCourses().remove(course);
-        studentService.updateStudent(student);
+        studentService.removeStudentCourse(studentId,courseId);
     }
 
     @RequestMapping(method = RequestMethod.GET,value = "/students/{studentId}/courses")
