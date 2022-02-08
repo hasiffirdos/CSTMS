@@ -67,6 +67,15 @@ public class StudentController {
         studentService.updateStudent(student);
     }
 
+    @RequestMapping(method = RequestMethod.DELETE, value = "/students/{studentId}/courses/{courseId}/opt-out")
+    @PreAuthorize("hasAnyRole('ADMIN','STUDENT')  or @principalSecurity.hasUserId(authentication,#studentId)")
+    public void optOutCourse(@PathVariable int studentId, @PathVariable int courseId){
+        Student student = studentService.getStudent(studentId);
+        Course course = courseService.getCourse(courseId);
+        student.getEnrolledCourses().remove(course);
+        studentService.updateStudent(student);
+    }
+
     @RequestMapping(method = RequestMethod.GET,value = "/students/{studentId}/courses")
     @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasUserId(authentication,#studentId)")
     public List<Course> getEnrolledCourses(@PathVariable int studentId){
