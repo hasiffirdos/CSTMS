@@ -21,13 +21,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table( name = "teachers")
-public class Teacher {
-    @Id
-    private int    id;
+public class Teacher extends User{
+//    @Id
+//    private int    id;
     private String firstname;
     private String lastname;
     private String email;
-    private String password;
+//    private String password;
     private String phone;
     private Date   dob;
     private Date   signupDate;
@@ -42,8 +42,8 @@ public class Teacher {
     )
     private List<Course> taughtCourses = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private User user;
+//    @OneToOne
+//    @JoinColumn(name = "id", referencedColumnName = "id")
+//    private User user;
 
 }

@@ -18,20 +18,20 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table( name = "admins")
-public class Admin {
-    @Id
-    private int    id;
+public class Admin extends User{
+//    @Id
+//    private int    id;
     private String firstname;
     private String lastname;
     private String email;
-    private String password;
+//    private String password;
     private String phone;
     private Date   dob;
     private Date   signupDate;
     private int    age;
 
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private User user;
+//    @OneToOne
+//    @JoinColumn(name = "id", referencedColumnName = "id")
+//    private User user;
 
 }

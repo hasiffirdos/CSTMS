@@ -22,7 +22,7 @@ public class StudentMapper {
                 .setFirstname(studentDto.getFirstname())
                 .setLastname(studentDto.getLastname())
                 .setEmail(studentDto.getEmail())
-                .setPassword(studentDto.getPassword())
+//                .setPassword(studentDto.getPassword())
                 .setPhone(studentDto.getPhone())
                 .setDob(studentDto.getDob())
                 .setSignupDate(new Date())

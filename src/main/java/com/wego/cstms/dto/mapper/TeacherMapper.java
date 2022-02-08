@@ -25,7 +25,7 @@ public class TeacherMapper {
                 .setFirstname(teacherDto.getFirstname())
                 .setLastname(teacherDto.getLastname())
                 .setEmail(teacherDto.getEmail())
-                .setPassword(teacherDto.getPassword())
+//                .setPassword(teacherDto.getPassword())
                 .setPhone(teacherDto.getPhone())
                 .setDob(teacherDto.getDob())
                 .setSignupDate(new Date())

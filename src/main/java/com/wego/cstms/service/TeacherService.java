@@ -45,14 +45,14 @@ public class TeacherService {
 
     public void addTeacher(TeacherDto teacherDto) {
         Teacher teacher = TeacherMapper.toTeacher(teacherDto);
-        User user = new User();
-        user.setUserName(teacher.getFirstname().concat(teacher.getLastname()));
-        user.setPassword(passwordEncoder.encode(teacher.getPassword()));
-        user.setRole("TEACHER");
-        user.setActive(true);
+//        User user = new User();
+        teacher.setUserName(teacher.getFirstname().concat(teacher.getLastname()));
+        teacher.setPassword(passwordEncoder.encode(teacherDto.getPassword()));
+        teacher.setRole("TEACHER");
+        teacher.setActive(true);
 
-        userRepository.save(user);
-        teacher.setId(user.getId());
+//        userRepository.save(user);
+//        teacher.setId(user.getId());
         teacherRepository.save(teacher);
     }
 

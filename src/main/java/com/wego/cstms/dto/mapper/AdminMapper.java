@@ -23,7 +23,7 @@ public class AdminMapper {
                 .setFirstname(adminDto.getFirstname())
                 .setLastname(adminDto.getLastname())
                 .setEmail(adminDto.getEmail())
-                .setPassword(adminDto.getPassword())
+//                .setPassword(adminDto.getPassword())
                 .setPhone(adminDto.getPhone())
                 .setDob(adminDto.getDob())
                 .setSignupDate(new Date())

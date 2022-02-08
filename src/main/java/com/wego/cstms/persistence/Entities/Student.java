@@ -21,14 +21,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "students")
-public class Student {
-    @Id
+public class Student extends User{
+//    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int    id;
+//    private int    id;
     private String firstname;
     private String lastname;
     private String email;
-    private String password;
+//    private String password;
     private String phone;
     private Date   dob;
     private Date   signupDate;
@@ -43,8 +43,8 @@ public class Student {
     )
     private List<Course> enrolledCourses = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private User user;
+//    @OneToOne
+//    @JoinColumn(name = "id", referencedColumnName = "id")
+//    private User user;
 
 }

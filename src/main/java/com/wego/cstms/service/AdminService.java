@@ -43,13 +43,13 @@ public class AdminService {
 
     public void addAdmin(AdminDto adminDto){
         Admin admin= AdminMapper.toAdmin(adminDto);
-        User user = new User();
-        user.setUserName(adminDto.getFirstname()+adminDto.getLastname());
-        user.setPassword(passwordEncoder.encode(adminDto.getPassword()));
-        user.setRole("ADMIN");
-        user.setActive(true);
-        userRepository.save(user);
-        admin.setId(user.getId());
+//        User user = new User();
+        admin.setUserName(adminDto.getFirstname()+adminDto.getLastname());
+        admin.setPassword(passwordEncoder.encode(adminDto.getPassword()));
+        admin.setRole("ADMIN");
+        admin.setActive(true);
+//        userRepository.save(user);
+//        admin.setId(user.getId());
 
         adminRepository.save(admin);
 
