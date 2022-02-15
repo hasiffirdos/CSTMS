@@ -43,7 +43,7 @@ public class TeacherController {
 
     //    OPEN
     @RequestMapping("/teachers")
-    @PreAuthorize("hasAnyRole('ADMIN','TEACHER','STUDENT')")
+//    @PreAuthorize("hasAnyRole('ADMIN','TEACHER','STUDENT')")
     public List<TeacherDto> getTeachers() {
         return teacherService.getAllTeachers();
     }

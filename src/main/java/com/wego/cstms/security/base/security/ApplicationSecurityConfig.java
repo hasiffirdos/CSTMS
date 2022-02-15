@@ -1,6 +1,7 @@
 package com.wego.cstms.security.base.security;
 
 
+//import com.wego.cstms.WebConfig;
 import com.wego.cstms.security.auth.ApplicationUserService;
 import com.wego.cstms.security.jwt.JwtConfig;
 import com.wego.cstms.security.jwt.JwtTokenVerifier;
@@ -16,18 +17,23 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
 
 import javax.crypto.SecretKey;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+//@AllArgsConstructor
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final ApplicationUserService applicationUserService;
     private final JwtConfig jwtConfig;
     private final SecretKey secretKey;
+    @Autowired
+    private CorsConfiguration corsConfiguration;
     @Autowired
     public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, ApplicationUserService applicationUserService, JwtConfig jwtConfig, SecretKey secretKey) {
         this.passwordEncoder = passwordEncoder;
@@ -40,6 +46,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().configurationSource(request -> corsConfiguration).and()
                 .csrf().disable()
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -48,6 +55,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/","index","/css/*","/js/*").permitAll()
                 .antMatchers("/courses/**").permitAll()
+                .antMatchers("/teachers").permitAll()
+//                .antMatchers("/teachers/*/courses").permitAll()
 //                .antMatchers("/users").permitAll()
                 .anyRequest().authenticated();
 
@@ -65,4 +74,5 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setUserDetailsService(applicationUserService);
         return provider;
     }
+
 }
