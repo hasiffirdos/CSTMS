@@ -2,13 +2,10 @@ package com.wego.cstms.rest.controller;
 
 import com.wego.cstms.dto.models.CourseContentDto;
 import com.wego.cstms.persistence.Entities.Course;
-import com.wego.cstms.persistence.Entities.Student;
 import com.wego.cstms.dto.models.StudentDto;
 import com.wego.cstms.service.ContentService;
-import com.wego.cstms.service.CourseService;
 import com.wego.cstms.service.FilesStorageService;
 import com.wego.cstms.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +19,13 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
-    private final CourseService courseService;
     private final ContentService contentService;
     private final FilesStorageService filesStorageService;
 
 
 //    @Autowired
-    public StudentController(StudentService studentService, CourseService courseService, ContentService contentService, FilesStorageService filesStorageService) {
+    public StudentController(StudentService studentService, ContentService contentService, FilesStorageService filesStorageService) {
         this.studentService = studentService;
-        this.courseService = courseService;
         this.contentService = contentService;
         this.filesStorageService = filesStorageService;
     }

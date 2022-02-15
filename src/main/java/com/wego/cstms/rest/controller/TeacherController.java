@@ -1,8 +1,5 @@
 package com.wego.cstms.rest.controller;
 
-import com.wego.cstms.persistence.Entities.Course;
-import com.wego.cstms.persistence.Entities.CourseContent;
-import com.wego.cstms.persistence.Entities.Teacher;
 import com.wego.cstms.dto.models.CourseContentDto;
 import com.wego.cstms.dto.models.CourseDto;
 import com.wego.cstms.dto.models.TeacherDto;
@@ -10,10 +7,6 @@ import com.wego.cstms.service.ContentService;
 import com.wego.cstms.service.CourseService;
 import com.wego.cstms.service.FilesStorageService;
 import com.wego.cstms.service.TeacherService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +24,7 @@ public class TeacherController {
     private final FilesStorageService filesStorageService;
 
 
-//    @Autowired
+    //    @Autowired
     public TeacherController(TeacherService teacherService,
                              CourseService courseService,
                              ContentService contentService,
@@ -43,7 +36,7 @@ public class TeacherController {
     }
 
     //    OPEN
-    @RequestMapping(method = RequestMethod.GET,value = "")
+    @RequestMapping(method = RequestMethod.GET, value = "")
 //    @PreAuthorize("hasRole('ADMIN')")
     public List<TeacherDto> getTeachers() {
         return teacherService.getAllTeachers();
@@ -88,14 +81,9 @@ public class TeacherController {
     @RequestMapping("/{teacherId}/courses/{courseId}/course-contents")
     @PreAuthorize("hasRole('ADMIN') or (hasRole('TEACHER') and  @principalSecurity.hasUserId(authentication,#teacherId))")
     public List<CourseContentDto> getCoursesContent(@PathVariable int teacherId, @PathVariable int courseId) {
-
-//        TODO: here, teacher id will be used for security... to check if current teacher own this course or not.
         return contentService.getCoursesAllContents(courseId);
     }
 
-
-    //    TODO: do change this with uploading file functionality.
-//    uploading course content
     @RequestMapping(method = RequestMethod.POST, value = "/{teacherId}/courses/{courseId}/course-contents")
     @PreAuthorize("hasRole('ADMIN') or (hasRole('TEACHER') and  @principalSecurity.hasCourseOwnership(authentication,#teacherId,#courseId))")
     public void addCourseContent(@RequestBody CourseContentDto courseContentDto,
@@ -143,11 +131,6 @@ public class TeacherController {
                                     @PathVariable int courseContentId) {
         contentService.deleteCourseContent(courseContentId);
     }
-
-//    @RequestMapping(method = RequestMethod.PUT, value = "/courses/{courseId}/course-content/")
-//    public List<Student> updateCourseContent(@PathVariable int courseId){
-//        return courseContentService.updateCourseContent(courseId);
-//    }
 
 
 }
