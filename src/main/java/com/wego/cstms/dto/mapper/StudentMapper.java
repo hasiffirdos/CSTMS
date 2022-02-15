@@ -18,15 +18,16 @@ public class StudentMapper {
     }
 
     public static Student toStudent(StudentDto studentDto) {
-        return new Student()
-                .setFirstname(studentDto.getFirstname())
-                .setLastname(studentDto.getLastname())
-                .setEmail(studentDto.getEmail())
-//                .setPassword(studentDto.getPassword())
-                .setPhone(studentDto.getPhone())
-                .setDob(studentDto.getDob())
-                .setSignupDate(new Date())
-                .setAge(studentDto.getAge());
+        Student student = new Student();
+        student.setFirstname(studentDto.getFirstname());
+        student.setLastname(studentDto.getLastname());
+        student.setEmail(studentDto.getEmail());
+//                student.setPassword(studentDto.getPassword());
+        student.setPhone(studentDto.getPhone());
+        student.setDob(studentDto.getDob());
+        student.setSignupDate(new Date());
+        student.setAge(studentDto.getAge());
+        return student;
 
     }
 }

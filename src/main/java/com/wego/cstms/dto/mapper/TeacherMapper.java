@@ -8,7 +8,7 @@ import com.wego.cstms.persistence.Entities.Teacher;
 import java.util.Date;
 
 public class TeacherMapper {
-    public static TeacherDto toTeacherDto(Teacher teacher){
+    public static TeacherDto toTeacherDto(Teacher teacher) {
         return new TeacherDto()
                 .setId(teacher.getId())
                 .setFirstname(teacher.getFirstname())
@@ -21,16 +21,16 @@ public class TeacherMapper {
 
 
     public static Teacher toTeacher(TeacherDto teacherDto) {
-        return new Teacher()
-                .setFirstname(teacherDto.getFirstname())
-                .setLastname(teacherDto.getLastname())
-                .setEmail(teacherDto.getEmail())
-//                .setPassword(teacherDto.getPassword())
-                .setPhone(teacherDto.getPhone())
-                .setDob(teacherDto.getDob())
-                .setSignupDate(new Date())
-                .setAge(teacherDto.getAge());
-
+        Teacher teacher = new Teacher();
+        teacher.setFirstname(teacherDto.getFirstname());
+        teacher.setLastname(teacherDto.getLastname());
+        teacher.setEmail(teacherDto.getEmail());
+//                teacher.setPassword(teacherDto.getPassword())
+        teacher.setPhone(teacherDto.getPhone());
+        teacher.setDob(teacherDto.getDob());
+        teacher.setSignupDate(new Date());
+        teacher.setAge(teacherDto.getAge());
+        return teacher;
     }
 }
 

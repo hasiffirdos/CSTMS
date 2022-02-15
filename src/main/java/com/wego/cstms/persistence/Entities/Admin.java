@@ -16,19 +16,19 @@ import java.util.Date;
 @Setter
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @Table( name = "admins")
 public class Admin extends User{
 //    @Id
 //    private int    id;
-    private String firstname;
-    private String lastname;
-    private String email;
-//    private String password;
-    private String phone;
-    private Date   dob;
-    private Date   signupDate;
-    private int    age;
+//    private String firstname;
+//    private String lastname;
+//    private String email;
+////    private String password;
+//    private String phone;
+//    private Date   dob;
+//    private Date   signupDate;
+//    private int    age;
 
 //    @OneToOne
 //    @JoinColumn(name = "id", referencedColumnName = "id")

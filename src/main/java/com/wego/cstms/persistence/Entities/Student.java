@@ -25,14 +25,14 @@ public class Student extends User{
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private int    id;
-    private String firstname;
-    private String lastname;
-    private String email;
-//    private String password;
-    private String phone;
-    private Date   dob;
-    private Date   signupDate;
-    private int    age;
+//    private String firstname;
+//    private String lastname;
+//    private String email;
+////    private String password;
+//    private String phone;
+//    private Date   dob;
+//    private Date   signupDate;
+//    private int    age;
     @JsonBackReference
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
