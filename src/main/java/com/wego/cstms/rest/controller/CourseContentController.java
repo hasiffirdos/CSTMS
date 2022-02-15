@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/courses/{courseId}/course-contents")
 public class CourseContentController {
 
     private final ContentService contentService;
@@ -23,7 +24,7 @@ public class CourseContentController {
     }
 
 
-    @RequestMapping("/courses/{courseId}/course-contents")
+    @RequestMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public List<CourseContentDto> getCoursesContent(@PathVariable int courseId){
         return contentService.getCoursesAllContents(courseId);
@@ -35,8 +36,9 @@ public class CourseContentController {
 //
 
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/courses/{courseId}/course-contents/{courseContentId}")
-    public void deleteCourse(@PathVariable Integer courseId, @PathVariable int courseContentId){
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{courseContentId}")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEACHER') and  @principalSecurity.isCourseOwner(authentication,#courseId))")
+    public void deleteCourseContent(@PathVariable Integer courseId, @PathVariable int courseContentId){
         contentService.deleteCourseContent(courseContentId);
     }
 

@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping("/teachers")
 public class TeacherController {
 
     private final TeacherService teacherService;
@@ -30,7 +31,7 @@ public class TeacherController {
     private final FilesStorageService filesStorageService;
 
 
-    @Autowired
+//    @Autowired
     public TeacherController(TeacherService teacherService,
                              CourseService courseService,
                              ContentService contentService,
@@ -42,39 +43,39 @@ public class TeacherController {
     }
 
     //    OPEN
-    @RequestMapping("/teachers")
-//    @PreAuthorize("hasAnyRole('ADMIN','TEACHER','STUDENT')")
+    @RequestMapping(method = RequestMethod.GET,value = "")
+//    @PreAuthorize("hasRole('ADMIN')")
     public List<TeacherDto> getTeachers() {
         return teacherService.getAllTeachers();
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/teachers")
+    @RequestMapping(method = RequestMethod.POST, value = "/register-teacher")
 //    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public void registerTeacher(@RequestBody TeacherDto teacherDto) {
         teacherService.addTeacher(teacherDto);
     }
 
-    @RequestMapping(value = "/teachers/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasUserId(authentication,#id)")
-    public TeacherDto getTeacherById(@PathVariable Integer id) {
-        return teacherService.getTeacher(id);
+    @RequestMapping(value = "/{teacherId}")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEACHER') and  @principalSecurity.hasUserId(authentication,#teacherId))")
+    public TeacherDto getTeacherById(@PathVariable Integer teacherId) {
+        return teacherService.getTeacher(teacherId);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/teachers/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasUserId(authentication,#id)")
-    public void deactivateTeacher(@PathVariable Integer id) {
-        teacherService.deleteTeacher(id);
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{teacherId}")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEACHER') and  @principalSecurity.hasUserId(authentication,#teacherId))")
+    public void deactivateTeacher(@PathVariable Integer teacherId) {
+        teacherService.deleteTeacher(teacherId);
     }
 
     //    OPEN
-    @RequestMapping(value = "/teachers/{teacherId}/courses")
-    @PreAuthorize("hasAnyRole('ADMIN','STUDENT','TEACHER')")
+    @RequestMapping(value = "/{teacherId}/courses")
+//    @PreAuthorize("hasAnyRole('ADMIN','STUDENT','TEACHER')")
     public List<CourseDto> getTeacherCourses(@PathVariable int teacherId) {
         return teacherService.getTeacherCourses(teacherId);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/teachers/{teacherId}/courses")
+    @RequestMapping(method = RequestMethod.POST, value = "/{teacherId}/courses")
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public void addCourse(@RequestBody CourseDto courseDto, @PathVariable int teacherId) {
         teacherService.addTeachersCourse(courseDto, teacherId);
@@ -84,8 +85,8 @@ public class TeacherController {
 
 //    Course Content endpoints now on.
 
-    @RequestMapping("/teachers/{teacherId}/courses/{courseId}/course-contents")
-    @PreAuthorize("hasAnyRole('ADMIN','TEACHER') or @principalSecurity.hasUserId(authentication,#teacherId)")
+    @RequestMapping("/{teacherId}/courses/{courseId}/course-contents")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEACHER') and  @principalSecurity.hasUserId(authentication,#teacherId))")
     public List<CourseContentDto> getCoursesContent(@PathVariable int teacherId, @PathVariable int courseId) {
 
 //        TODO: here, teacher id will be used for security... to check if current teacher own this course or not.
@@ -95,18 +96,17 @@ public class TeacherController {
 
     //    TODO: do change this with uploading file functionality.
 //    uploading course content
-    @RequestMapping(method = RequestMethod.POST, value = "/teachers/{teacherId}/courses/{courseId}/course-contents")
-    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    @RequestMapping(method = RequestMethod.POST, value = "/{teacherId}/courses/{courseId}/course-contents")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEACHER') and  @principalSecurity.hasCourseOwnership(authentication,#teacherId,#courseId))")
     public void addCourseContent(@RequestBody CourseContentDto courseContentDto,
                                  @PathVariable Integer courseId,
                                  @PathVariable int teacherId
     ) {
-
         contentService.addCourseContent(courseContentDto, courseId);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/teachers/{teacherId}/courses/{courseId}/course-contents-file")
-    @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasCourseOwnership(authentication,#teacherId,#courseId)")
+    @RequestMapping(method = RequestMethod.POST, value = "/{teacherId}/courses/{courseId}/course-contents-file")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEACHER') and  @principalSecurity.hasCourseOwnership(authentication,#teacherId,#courseId))")
     public void addCourseContentWithFile(@RequestParam("file_name") String fileName,
                                          @RequestParam("file_type") String fileType,
                                          @RequestParam("description") String description,
@@ -115,7 +115,6 @@ public class TeacherController {
                                          @PathVariable int teacherId) {
 
         try {
-
             filesStorageService.save(contentFile, courseId);
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,7 +128,7 @@ public class TeacherController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE,
-            value = "/teachers/{teacherId}/courses/{courseId}")
+            value = "/{teacherId}/courses/{courseId}")
     @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasCourseOwnership(authentication,#teacherId,#courseId) ")
     public void deleteCourse(@PathVariable int courseId,
                              @PathVariable int teacherId) {
@@ -137,7 +136,7 @@ public class TeacherController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE,
-            value = "/teachers/{teacherId}/courses/{courseId}/course-contents/{courseContentId}")
+            value = "/{teacherId}/courses/{courseId}/course-contents/{courseContentId}")
     @PreAuthorize("hasAnyRole('ADMIN') or @principalSecurity.hasCourseOwnership(authentication,#teacherId,#courseId) ")
     public void deleteCourseContent(@PathVariable int courseId,
                                     @PathVariable int teacherId,

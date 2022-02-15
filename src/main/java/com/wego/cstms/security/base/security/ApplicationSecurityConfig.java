@@ -55,8 +55,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/","index","/css/*","/js/*").permitAll()
                 .antMatchers("/courses/**").permitAll()
-                .antMatchers("/teachers").permitAll()
-//                .antMatchers("/teachers/*/courses").permitAll()
+                .antMatchers("/teachers/**").permitAll()
+                .antMatchers("/teachers/register-teacher/**").permitAll()
+                .antMatchers("/teachers/*/courses/**").permitAll()
 //                .antMatchers("/users").permitAll()
                 .anyRequest().authenticated();
 

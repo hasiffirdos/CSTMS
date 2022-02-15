@@ -62,4 +62,13 @@ public class PrincipalCheckLayer {
         return false;
     }
 
+    public boolean isCourseOwner(Authentication authentication, int courseId) {
+        Course course = courseRepository.findById(courseId).get();
+        User teacher = teacherRepository.findByUserName(authentication.getName()).get();
+        if(course.getTeachers().contains(teacher)){
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -11,47 +11,48 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/courses")
 public class CourseController {
 
     private final CourseService courseService;
     private final TeacherService teacherService;
-    @Autowired
+//    @Autowired
     public CourseController(CourseService courseService, TeacherService teacherService) {
         this.courseService = courseService;
         this.teacherService = teacherService;
     }
 //    OPEN
-    @RequestMapping("/courses")
+    @RequestMapping("")
     public List<Course> getCourses(){
         return courseService.getAllCourses();
     }
 //    OPEN
-    @RequestMapping("/courses/top-{numberOfCourses}-all-times")
+    @RequestMapping("/top-{numberOfCourses}-all-times")
     public List<Course> getCoursesTopAllTimes(@PathVariable int numberOfCourses){
         return courseService.getTopAllTimes(numberOfCourses);
     }
 //    OPEN
-    @RequestMapping("/courses/top-{numberOfCourses}-trending")
+    @RequestMapping("/top-{numberOfCourses}-trending")
     public List<Course> getCoursesTopTrending(@PathVariable int numberOfCourses){
         return courseService.getTopTrending(numberOfCourses);
     }
 
 
 //    OPEN
-    @RequestMapping( value = "/courses/{id}")
-    public Course getCourse(@PathVariable Integer id){
-        return courseService.getCourse(id);
+    @RequestMapping( value = "/{courseId}")
+    public Course getCourse(@PathVariable Integer courseId){
+        return courseService.getCourse(courseId);
     }
 
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/courses/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
-    public void deleteCourse(@PathVariable Integer id){
-        courseService.deleteCourse(id);
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{courseId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteCourse(@PathVariable Integer courseId){
+        courseService.deleteCourse(courseId);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/courses/{courseId}/students")
-    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    @RequestMapping(method = RequestMethod.GET, value = "/{courseId}/students")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEACHER') and  @principalSecurity.isCourseOwner(authentication,#courseId))")
     public List<Student> getRegisteredStudents(@PathVariable int courseId){
         return courseService.getRegisteredStudents(courseId);
     }
