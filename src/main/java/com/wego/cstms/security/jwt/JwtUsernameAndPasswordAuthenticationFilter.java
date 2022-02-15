@@ -1,11 +1,14 @@
 package com.wego.cstms.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.crypto.SecretKey;
@@ -14,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.http.HttpHeaders;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -28,6 +32,17 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         this.secretKey = secretKey;
     }
 
+//    static final class ResponseSample {
+//        String token;
+//    }
+    public static String getUserType(String auth){
+        String type = "";
+        if (auth.contains("ROLE_")){
+            type = auth.replace("ROLE_","");
+        }
+        return type;
+    }
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
@@ -38,6 +53,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(),
                     authenticationRequest.getPassword()
+
             );
 
             Authentication authenticate = authenticationManager.authenticate(authentication);
@@ -60,7 +76,26 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))
                 .signWith(secretKey)
                 .compact();
-        response.addHeader(jwtConfig.getAuthorizationHeader(),jwtConfig.getTokenPrefix()+token);
+        String userType = "";
+        for (GrantedAuthority auth : authResult.getAuthorities()){
+            if (auth.getAuthority().contains("ROLE_")){
+                userType = auth.getAuthority().replace("ROLE_","");
+            }
+        }
+        response.setHeader(jwtConfig.getAuthorizationHeader(),jwtConfig.getTokenPrefix()+token);
+        response.setHeader("Access-Control-Expose-Headers", "Authorization, UserType, UserName");
+        response.setHeader("UserType",userType);
+        response.setHeader("UserName",authResult.getName());
+//        response.addHeader("Access-Control-Allow-Origin", "*");
+//        response.setHeader("Content-Type", "application/json");
+//        response.setStatus(200);
+//        ResponseSample resToken = new ResponseSample();
+//        resToken.token = token;
+//        String resp = new Gson().toJson(resToken);
+//        response.getWriter().write(resp);
+//        response.getWriter().flush();
+//
+//        chain.doFilter(request,response);
 
     }
 }
