@@ -1,7 +1,6 @@
 package com.wego.cstms.persistence.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.wego.cstms.dto.models.CourseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,7 +38,7 @@ public class Course {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "taughtCourses")
-    private List<Teacher> teachers = new ArrayList<>();
+    private List<TeacherEntity> teachers = new ArrayList<>();
 
 
 

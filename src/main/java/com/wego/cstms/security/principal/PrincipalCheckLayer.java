@@ -2,7 +2,7 @@ package com.wego.cstms.security.principal;
 
 import com.wego.cstms.persistence.Entities.Course;
 import com.wego.cstms.persistence.Entities.StudentEntity;
-import com.wego.cstms.persistence.Entities.Teacher;
+import com.wego.cstms.persistence.Entities.TeacherEntity;
 import com.wego.cstms.persistence.Entities.User;
 import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.persistence.repositories.StudentRepository;
@@ -51,7 +51,7 @@ public class PrincipalCheckLayer {
 
     public boolean hasCourseOwnership(Authentication authentication, int teacherId, int courseId) {
         if (hasUserId(authentication, teacherId)) {
-            Optional<Teacher> teacher = teacherRepository.findById(teacherId);
+            Optional<TeacherEntity> teacher = teacherRepository.findById(teacherId);
             if (teacher.isPresent()) {
                 for (Course Course : teacher.get().getTaughtCourses()) {
                     if (Course.getId() == courseId) {
@@ -67,7 +67,7 @@ public class PrincipalCheckLayer {
     public boolean isCourseOwner(Authentication authentication, int courseId) {
         Optional<Course> course = courseRepository.findById(courseId);
         if (course.isPresent()) {
-            Optional<Teacher> optionalTeacher = teacherRepository.findByUserName(authentication.getName());
+            Optional<TeacherEntity> optionalTeacher = teacherRepository.findByUserName(authentication.getName());
             if (optionalTeacher.isPresent()) {
                 return course.get().getTeachers().contains(optionalTeacher.get());
             }

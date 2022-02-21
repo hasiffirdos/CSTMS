@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table( name = "teachers")
-public class Teacher extends User{
+public class TeacherEntity extends User{
 //    @Id
 //    private int    id;
 //    private String firstname;
