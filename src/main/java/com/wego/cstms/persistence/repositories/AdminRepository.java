@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface AdminRepository extends CrudRepository<Admin,Integer> {
     public Admin findByUserName(String username);
+    Boolean existsByUserName(String username);
 }

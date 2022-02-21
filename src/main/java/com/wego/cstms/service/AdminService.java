@@ -45,19 +45,11 @@ public class AdminService {
     }
 
     public AdminDto addAdmin(AdminDto adminDto) {
-
-        Optional<Admin> preAdmin = Optional.ofNullable(adminRepository.findByUserName(adminDto.getUsername()));
-        if (preAdmin.isEmpty()) {
-            Admin admin = AdminMapper.toAdmin(adminDto);
-            admin.setUserName(admin.getUserName());
-            admin.setPassword(passwordEncoder.encode(adminDto.getPassword()));
-            admin.setRole("ADMIN");
-            admin.setActive(true);
+        if (adminRepository.existsByUserName(adminDto.getUsername())) {
+            Admin admin = AdminMapper.toAdmin(adminDto,passwordEncoder);
             adminRepository.save(admin);
             return adminDto;
         }
         throw msException.EntityAlreadyExistsException(EntityType.ADMIN,adminDto.getUsername());
-//        throw new RuntimeException(String.format("Duplicate username %s", adminDto.getUsername()));
-
     }
 }
