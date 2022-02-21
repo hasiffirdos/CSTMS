@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component("principalSecurity")
 public class PrincipalCheckLayer {
 
@@ -30,18 +32,15 @@ public class PrincipalCheckLayer {
     }
 
     public boolean hasUserId(Authentication authentication, int userId) {
-        User user = userRepository.findById(userId).get();
-        if (authentication.getName().equals(user.getUserName())) {
-            return true;
-        }
-        return false;
+        Optional<User> user = userRepository.findById(userId);
+        return user.filter(value -> authentication.getName().equals(value.getUserName())).isPresent();
     }
 
     public boolean hasEnrolledCourse(Authentication authentication, int studentId, int courseId) {
-        if (hasUserId(authentication,studentId)){
+        if (hasUserId(authentication, studentId)) {
             Student student = studentRepository.findById(studentId).get();
-            for (Course course : student.getEnrolledCourses()) {
-                if (course.getId() == courseId) {
+            for (Course Course : student.getEnrolledCourses()) {
+                if (Course.getId() == courseId) {
                     return true;
                 }
             }
@@ -51,22 +50,27 @@ public class PrincipalCheckLayer {
 
 
     public boolean hasCourseOwnership(Authentication authentication, int teacherId, int courseId) {
-        if (hasUserId(authentication,teacherId)){
-            Teacher teacher = teacherRepository.findById(teacherId).get();
-            for (Course course : teacher.getTaughtCourses()) {
-                if (course.getId() == courseId) {
-                    return true;
+        if (hasUserId(authentication, teacherId)) {
+            Optional<Teacher> teacher = teacherRepository.findById(teacherId);
+            if (teacher.isPresent()) {
+                for (Course Course : teacher.get().getTaughtCourses()) {
+                    if (Course.getId() == courseId) {
+                        return true;
+                    }
                 }
+
             }
         }
         return false;
     }
 
     public boolean isCourseOwner(Authentication authentication, int courseId) {
-        Course course = courseRepository.findById(courseId).get();
-        User teacher = teacherRepository.findByUserName(authentication.getName()).get();
-        if(course.getTeachers().contains(teacher)){
-            return true;
+        Optional<Course> course = courseRepository.findById(courseId);
+        if (course.isPresent()) {
+            Optional<Teacher> optionalTeacher = teacherRepository.findByUserName(authentication.getName());
+            if (optionalTeacher.isPresent()) {
+                return course.get().getTeachers().contains(optionalTeacher.get());
+            }
         }
         return false;
     }

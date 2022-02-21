@@ -1,5 +1,6 @@
 package com.wego.cstms.service;
 
+import com.wego.cstms.minio.MinioService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,13 @@ import java.util.stream.Stream;
 
 @Service
 public class FilesStorageService {
+
     private final Path root = Paths.get("uploads");
+    private final MinioService minioService;
+
+    public FilesStorageService(MinioService minioService) {
+        this.minioService = minioService;
+    }
 
     public void init(){
         try {
@@ -28,6 +35,7 @@ public class FilesStorageService {
 
     public void save(MultipartFile file,Integer courseId){
         try {
+
             String stpath = this.root.toString()+"/"+courseId.toString();
             Path path = Paths.get(this.root.toString(),courseId.toString());
             File directory = new File(path.toString());

@@ -8,7 +8,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.crypto.SecretKey;
@@ -17,7 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.http.HttpHeaders;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -32,9 +30,9 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         this.secretKey = secretKey;
     }
 
-//    static final class ResponseSample {
-//        String token;
-//    }
+    static final class ResponseMessage {
+        String message;
+    }
     public static String getUserType(String auth){
         String type = "";
         if (auth.contains("ROLE_")){
@@ -64,6 +62,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         }
     }
 
+
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
@@ -86,17 +85,27 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         response.setHeader("Access-Control-Expose-Headers", "Authorization, UserType, UserName");
         response.setHeader("UserType",userType);
         response.setHeader("UserName",authResult.getName());
-//        response.addHeader("Access-Control-Allow-Origin", "*");
-//        response.setHeader("Content-Type", "application/json");
-//        response.setStatus(200);
-//        ResponseSample resToken = new ResponseSample();
-//        resToken.token = token;
-//        String resp = new Gson().toJson(resToken);
-//        response.getWriter().write(resp);
-//        response.getWriter().flush();
+        response.setHeader("Content-Type", "application/json");
+        ResponseMessage resMessage = new ResponseMessage();
+        resMessage.message = "Login Successfully";
+        String resp = new Gson().toJson(resMessage);
+        response.getWriter().write(resp);
+        response.getWriter().flush();
+
 //
 //        chain.doFilter(request,response);
 
     }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        response.setHeader("Content-Type", "application/json");
+        ResponseMessage resMessage = new ResponseMessage();
+        resMessage.message = "Username or Password is not valid...!";
+        String resp = new Gson().toJson(resMessage);
+        response.getWriter().write(resp);
+        response.getWriter().flush();
+    }
 }
+
 

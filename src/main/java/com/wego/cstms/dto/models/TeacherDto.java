@@ -16,6 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class TeacherDto {
     private int id;
+    private String username;
     private String firstname;
     private String lastname;
     private String email;

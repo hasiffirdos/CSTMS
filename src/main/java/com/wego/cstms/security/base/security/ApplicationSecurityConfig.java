@@ -32,14 +32,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final ApplicationUserService applicationUserService;
     private final JwtConfig jwtConfig;
     private final SecretKey secretKey;
+    private final CorsConfiguration corsConfiguration;
     @Autowired
-    private CorsConfiguration corsConfiguration;
-    @Autowired
-    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, ApplicationUserService applicationUserService, JwtConfig jwtConfig, SecretKey secretKey) {
+    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, ApplicationUserService applicationUserService, JwtConfig jwtConfig, SecretKey secretKey, CorsConfiguration corsConfiguration) {
         this.passwordEncoder = passwordEncoder;
         this.applicationUserService = applicationUserService;
         this.jwtConfig = jwtConfig;
         this.secretKey = secretKey;
+        this.corsConfiguration = corsConfiguration;
     }
 
 

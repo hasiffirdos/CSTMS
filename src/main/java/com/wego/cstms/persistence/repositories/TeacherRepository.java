@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface TeacherRepository extends CrudRepository<Teacher,Integer> {
-    Optional<User> findByUserName(String UserName);
+    Optional<Teacher> findByUserName(String UserName);
 
 }

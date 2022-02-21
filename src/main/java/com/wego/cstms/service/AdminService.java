@@ -2,29 +2,32 @@ package com.wego.cstms.service;
 
 
 import com.wego.cstms.dto.mapper.AdminMapper;
+import com.wego.cstms.exceptions.EntityType;
+import com.wego.cstms.exceptions.MSException;
 import com.wego.cstms.persistence.Entities.Admin;
 import com.wego.cstms.persistence.Entities.User;
 import com.wego.cstms.persistence.repositories.AdminRepository;
 import com.wego.cstms.persistence.repositories.UserRepository;
 import com.wego.cstms.dto.models.AdminDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminService {
 
 
     private final UserRepository userRepository;
+    private final MSException msException;
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public AdminService(UserRepository userRepository, AdminRepository adminRepository, PasswordEncoder passwordEncoder) {
+    public AdminService(UserRepository userRepository, MSException msException, AdminRepository adminRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.msException = msException;
         this.adminRepository = adminRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -36,52 +39,25 @@ public class AdminService {
     }
 
     public List<Admin> getAllAdmins() {
-        List<Admin> admins = new ArrayList<>();
-        adminRepository.findAll().forEach(admins::add);
-        return admins;
+        List<Admin> adminEntities = new ArrayList<>();
+        adminRepository.findAll().forEach(adminEntities::add);
+        return adminEntities;
     }
 
-    public void addAdmin(AdminDto adminDto){
-        Admin admin= AdminMapper.toAdmin(adminDto);
-//        User user = new User();
-        admin.setUserName(adminDto.getFirstname()+adminDto.getLastname());
-        admin.setPassword(passwordEncoder.encode(adminDto.getPassword()));
-        admin.setRole("ADMIN");
-        admin.setActive(true);
-//        userRepository.save(user);
-//        admin.setId(user.getId());
+    public AdminDto addAdmin(AdminDto adminDto) {
 
-        adminRepository.save(admin);
+        Optional<Admin> preAdmin = Optional.ofNullable(adminRepository.findByUserName(adminDto.getUsername()));
+        if (preAdmin.isEmpty()) {
+            Admin admin = AdminMapper.toAdmin(adminDto);
+            admin.setUserName(adminDto.getFirstname() + adminDto.getLastname());
+            admin.setPassword(passwordEncoder.encode(adminDto.getPassword()));
+            admin.setRole("ADMIN");
+            admin.setActive(true);
+            adminRepository.save(admin);
+            return adminDto;
+        }
+        throw msException.EntityAlreadyExistsException(EntityType.ADMIN,adminDto.getUsername());
+//        throw new RuntimeException(String.format("Duplicate username %s", adminDto.getUsername()));
 
     }
-
-//    public Student getStudent(Integer id) {
-//        return studentRepository.findById(id).get();
-//    }
-//
-//    public void addStudent(StudentDto studentDto) {
-//
-//        Student student = new Student(studentDto);
-////        saving user for Authentication
-//        User user = new User();
-//        user.setUserName(studentDto.getFirstname().concat(studentDto.getLastname()));
-//        user.setPassword(studentDto.getPassword());
-//        user.setRoles("STUDENT");
-//        user.setActive(true);
-//
-//        userRepository.save(user);
-//        studentRepository.save(student);
-//    }
-//
-//    public void updateStudent(Student student) {
-//        studentRepository.save(student);
-//    }
-//
-//    public void deleteStudent(Integer id) {
-//        studentRepository.deleteById(id);
-//    }
-//
-//    public List<Course> getEnrolledCourses(int studentId) {
-//        return studentRepository.findById(studentId).get().getEnrolledCourses();
-//    }
 }

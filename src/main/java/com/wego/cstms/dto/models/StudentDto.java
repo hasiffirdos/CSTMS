@@ -15,7 +15,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentDto {
+
     private int id;
+    private String username;
     private String firstname;
     private String lastname;
     private String email;

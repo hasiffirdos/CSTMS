@@ -16,6 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class AdminDto {
 //    private int id;
+    private String username;
     private String firstname;
     private String lastname;
     private String email;
