@@ -1,7 +1,7 @@
 package com.wego.cstms.service;
 
 
-import com.wego.cstms.persistence.Entities.User;
+import com.wego.cstms.persistence.Entities.UserEntity;
 import com.wego.cstms.persistence.repositories.AdminRepository;
 import com.wego.cstms.persistence.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class UserService {
 
 
     public int getUserId(String username) {
-        User user = userRepository.findByUserName(username).get();
-        return user.getId();
+        UserEntity userEntity = userRepository.findByUserName(username).get();
+        return userEntity.getId();
     }
 }

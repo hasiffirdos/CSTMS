@@ -1,15 +1,12 @@
 package com.wego.cstms.security.auth;
 
-import com.wego.cstms.persistence.Entities.User;
+import com.wego.cstms.persistence.Entities.UserEntity;
 import com.wego.cstms.security.base.security.ApplicationUserRole;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ApplicationUser implements UserDetails {
 
@@ -40,18 +37,18 @@ public class ApplicationUser implements UserDetails {
     }
 
 
-    public ApplicationUser(User user) {
-        this.password = user.getPassword();
+    public ApplicationUser(UserEntity userEntity) {
+        this.password = userEntity.getPassword();
 
-        this.username = user.getUserName();
-        this.grantedAuthorities = ApplicationUserRole.valueOf(user.getRole()).getGrantedAuthorities();
+        this.username = userEntity.getUserName();
+        this.grantedAuthorities = ApplicationUserRole.valueOf(userEntity.getRole()).getGrantedAuthorities();
 //        this.grantedAuthorities = Arrays.stream(user.getRoles().split(","))
 //                .map(SimpleGrantedAuthority::new)
 //                .collect(Collectors.toSet());
         this.isAccountNonExpired = true;
         this.isAccountNonLocked = true;
         this.isCredentialsNonExpired = true;
-        this.isEnabled = user.isActive();
+        this.isEnabled = userEntity.isActive();
     }
 
     @Override

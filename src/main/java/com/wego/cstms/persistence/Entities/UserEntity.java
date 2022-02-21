@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Table( name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int    id;

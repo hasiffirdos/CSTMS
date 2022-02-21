@@ -1,18 +1,15 @@
 package com.wego.cstms.security.auth;
 
-import com.wego.cstms.persistence.Entities.User;
+import com.wego.cstms.persistence.Entities.UserEntity;
 import com.wego.cstms.persistence.repositories.UserRepository;
-import com.wego.cstms.security.base.security.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
 
 
 @Service
@@ -31,7 +28,7 @@ public class ApplicationUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUserName(username);
+        Optional<UserEntity> user = userRepository.findByUserName(username);
         user.orElseThrow(()-> new UsernameNotFoundException("Not Found: "+ username));
         return user.map(ApplicationUser::new).get();
 

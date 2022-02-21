@@ -3,7 +3,7 @@ package com.wego.cstms.security.principal;
 import com.wego.cstms.persistence.Entities.Course;
 import com.wego.cstms.persistence.Entities.StudentEntity;
 import com.wego.cstms.persistence.Entities.TeacherEntity;
-import com.wego.cstms.persistence.Entities.User;
+import com.wego.cstms.persistence.Entities.UserEntity;
 import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.persistence.repositories.StudentRepository;
 import com.wego.cstms.persistence.repositories.TeacherRepository;
@@ -32,7 +32,7 @@ public class PrincipalCheckLayer {
     }
 
     public boolean hasUserId(Authentication authentication, int userId) {
-        Optional<User> user = userRepository.findById(userId);
+        Optional<UserEntity> user = userRepository.findById(userId);
         return user.filter(value -> authentication.getName().equals(value.getUserName())).isPresent();
     }
 

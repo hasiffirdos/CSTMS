@@ -5,7 +5,7 @@ import com.wego.cstms.dto.mapper.AdminMapper;
 import com.wego.cstms.exceptions.EntityType;
 import com.wego.cstms.exceptions.MSException;
 import com.wego.cstms.persistence.Entities.AdminEntity;
-import com.wego.cstms.persistence.Entities.User;
+import com.wego.cstms.persistence.Entities.UserEntity;
 import com.wego.cstms.persistence.repositories.AdminRepository;
 import com.wego.cstms.persistence.repositories.UserRepository;
 import com.wego.cstms.dto.models.AdminDto;
@@ -31,10 +31,10 @@ public class AdminService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
-        userRepository.findAll().forEach(users::add);
-        return users;
+    public List<UserEntity> getAllUsers() {
+        List<UserEntity> userEntities = new ArrayList<>();
+        userRepository.findAll().forEach(userEntities::add);
+        return userEntities;
     }
 
     public List<AdminEntity> getAllAdmins() {

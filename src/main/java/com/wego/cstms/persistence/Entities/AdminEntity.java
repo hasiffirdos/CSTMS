@@ -1,14 +1,11 @@
 package com.wego.cstms.persistence.Entities;
 
-import com.wego.cstms.dto.models.AdminDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.Date;
 
 
 @Entity
@@ -18,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 //@NoArgsConstructor
 @Table( name = "admins")
-public class AdminEntity extends User{
+public class AdminEntity extends UserEntity {
 //    @Id
 //    private int    id;
 //    private String firstname;
