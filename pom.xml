@@ -81,10 +81,37 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+<!--        Json -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.2</version>
+        </dependency>
         <!--        to add configuration file -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+<!--        for Minio -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.3.3</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.jlefebure</groupId>-->
+<!--            <artifactId>spring-boot-starter-minio</artifactId>-->
+<!--            <version>1.1</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.6.5</version>
         </dependency>
     </dependencies>
 
