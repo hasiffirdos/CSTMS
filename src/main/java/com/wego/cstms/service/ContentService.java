@@ -4,7 +4,7 @@ package com.wego.cstms.service;
 import com.wego.cstms.dto.mapper.CourseContentMapper;
 import com.wego.cstms.exceptions.EntityType;
 import com.wego.cstms.exceptions.MSException;
-import com.wego.cstms.persistence.Entities.Course;
+import com.wego.cstms.persistence.Entities.CourseEntity;
 import com.wego.cstms.persistence.Entities.CourseContent;
 import com.wego.cstms.persistence.repositories.CourseContentRepository;
 import com.wego.cstms.persistence.repositories.CourseRepository;
@@ -47,7 +47,7 @@ public class ContentService {
 
 
     public CourseContentDto addCourseContent(CourseContentDto courseContentDto, int courseId) {
-        Optional<Course> course = courseRepository.findById(courseId);
+        Optional<CourseEntity> course = courseRepository.findById(courseId);
         if (course.isPresent()){
             CourseContent courseContent = CourseContentMapper.toCourseContent(courseContentDto);
             courseContent.setCourse(course.get());

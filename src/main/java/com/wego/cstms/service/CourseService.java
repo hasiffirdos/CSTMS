@@ -6,7 +6,7 @@ import com.wego.cstms.dto.mapper.StudentMapper;
 import com.wego.cstms.dto.models.StudentDto;
 import com.wego.cstms.exceptions.EntityType;
 import com.wego.cstms.exceptions.MSException;
-import com.wego.cstms.persistence.Entities.Course;
+import com.wego.cstms.persistence.Entities.CourseEntity;
 import com.wego.cstms.persistence.Entities.StudentEntity;
 import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.dto.models.CourseDto;
@@ -37,7 +37,7 @@ public class CourseService {
     }
 
     public List<CourseDto> getTopAllTimes(int numberOfCourses) {
-        List<Course> cours = new ArrayList<>(courseRepository.getTopAllTimes());
+        List<CourseEntity> cours = new ArrayList<>(courseRepository.getTopAllTimes());
         List<CourseDto> selectedCourses = new ArrayList<>();
         cours.stream().limit(numberOfCourses).collect(Collectors.toList()).forEach(c -> {
             selectedCourses.add(CourseMapper.toCourseDto(c));
@@ -46,7 +46,7 @@ public class CourseService {
     }
 
     public List<CourseDto> getTopTrending(int numberOfCourses) {
-        List<Course> cours = new ArrayList<>(courseRepository.getTopTrending());
+        List<CourseEntity> cours = new ArrayList<>(courseRepository.getTopTrending());
         List<CourseDto> selectedCourses = new ArrayList<>();
         cours.stream().limit(numberOfCourses).collect(Collectors.toList()).forEach(c -> {
             selectedCourses.add(CourseMapper.toCourseDto(c));
@@ -55,7 +55,7 @@ public class CourseService {
     }
 
     public CourseDto getCourse(Integer id) {
-        Optional<Course> course = courseRepository.findById(id);
+        Optional<CourseEntity> course = courseRepository.findById(id);
         if (course.isPresent()) {
             return CourseMapper.toCourseDto(course.get());
         }
@@ -84,7 +84,7 @@ public class CourseService {
     }
 
     public List<StudentDto> getRegisteredStudents(int courseId) {
-        Optional<Course> course = courseRepository.findById(courseId);
+        Optional<CourseEntity> course = courseRepository.findById(courseId);
         if (course.isPresent()) {
             List<StudentDto> studentDtos = new ArrayList<>();
             List<StudentEntity> studentEntities = course.get().getRegisteredStudents();

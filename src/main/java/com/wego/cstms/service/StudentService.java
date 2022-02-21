@@ -4,7 +4,7 @@ package com.wego.cstms.service;
 import com.wego.cstms.dto.mapper.StudentMapper;
 import com.wego.cstms.exceptions.EntityType;
 import com.wego.cstms.exceptions.MSException;
-import com.wego.cstms.persistence.Entities.Course;
+import com.wego.cstms.persistence.Entities.CourseEntity;
 import com.wego.cstms.persistence.Entities.StudentEntity;
 import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.persistence.repositories.StudentRepository;
@@ -59,12 +59,12 @@ public class StudentService {
 
     public String addStudentCourse(int studentId, int courseId) {
         StudentEntity studentEntity = studentRepository.findById(studentId).orElse(null);
-        Course course = courseRepository.findById(courseId).orElse(null);
+        CourseEntity courseEntity = courseRepository.findById(courseId).orElse(null);
         if (studentEntity != null) {
-            if (course != null) {
-                studentEntity.getEnrolledCourses().add(course);
+            if (courseEntity != null) {
+                studentEntity.getEnrolledCourses().add(courseEntity);
                 studentRepository.save(studentEntity);
-                return String.format("%s has enrolled for Course:%s", studentEntity.getUserName(), course.getName());
+                return String.format("%s has enrolled for Course:%s", studentEntity.getUserName(), courseEntity.getName());
             }
             throw msException.EntityNotFoundException(EntityType.COURSE, courseId);
         }
@@ -73,12 +73,12 @@ public class StudentService {
 
     public String removeStudentCourse(int studentId, int courseId) {
         StudentEntity studentEntity = studentRepository.findById(studentId).orElse(null);
-        Course course = courseRepository.findById(courseId).orElse(null);
+        CourseEntity courseEntity = courseRepository.findById(courseId).orElse(null);
         if (studentEntity != null) {
-            if (course != null) {
-                studentEntity.getEnrolledCourses().remove(course);
+            if (courseEntity != null) {
+                studentEntity.getEnrolledCourses().remove(courseEntity);
                 studentRepository.save(studentEntity);
-                return String.format("%s has optOut for Course:%s", studentEntity.getUserName(), course.getName());
+                return String.format("%s has optOut for Course:%s", studentEntity.getUserName(), courseEntity.getName());
             }
             throw msException.EntityNotFoundException(EntityType.COURSE, courseId);
         }
@@ -97,7 +97,7 @@ public class StudentService {
         return false;
     }
 
-    public List<Course> getEnrolledCourses(int studentId) {
+    public List<CourseEntity> getEnrolledCourses(int studentId) {
         StudentEntity studentEntity = studentRepository.findById(studentId).orElse(null);
         if (studentEntity != null) {
             return studentEntity.getEnrolledCourses();

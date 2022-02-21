@@ -1,6 +1,6 @@
 package com.wego.cstms.security.principal;
 
-import com.wego.cstms.persistence.Entities.Course;
+import com.wego.cstms.persistence.Entities.CourseEntity;
 import com.wego.cstms.persistence.Entities.StudentEntity;
 import com.wego.cstms.persistence.Entities.TeacherEntity;
 import com.wego.cstms.persistence.Entities.UserEntity;
@@ -39,8 +39,8 @@ public class PrincipalCheckLayer {
     public boolean hasEnrolledCourse(Authentication authentication, int studentId, int courseId) {
         if (hasUserId(authentication, studentId)) {
             StudentEntity studentEntity = studentRepository.findById(studentId).get();
-            for (Course Course : studentEntity.getEnrolledCourses()) {
-                if (Course.getId() == courseId) {
+            for (CourseEntity CourseEntity : studentEntity.getEnrolledCourses()) {
+                if (CourseEntity.getId() == courseId) {
                     return true;
                 }
             }
@@ -53,8 +53,8 @@ public class PrincipalCheckLayer {
         if (hasUserId(authentication, teacherId)) {
             Optional<TeacherEntity> teacher = teacherRepository.findById(teacherId);
             if (teacher.isPresent()) {
-                for (Course Course : teacher.get().getTaughtCourses()) {
-                    if (Course.getId() == courseId) {
+                for (CourseEntity courseEntity : teacher.get().getTaughtCourses()) {
+                    if (courseEntity.getId() == courseId) {
                         return true;
                     }
                 }
@@ -65,7 +65,7 @@ public class PrincipalCheckLayer {
     }
 
     public boolean isCourseOwner(Authentication authentication, int courseId) {
-        Optional<Course> course = courseRepository.findById(courseId);
+        Optional<CourseEntity> course = courseRepository.findById(courseId);
         if (course.isPresent()) {
             Optional<TeacherEntity> optionalTeacher = teacherRepository.findByUserName(authentication.getName());
             if (optionalTeacher.isPresent()) {

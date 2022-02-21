@@ -1,15 +1,15 @@
 package com.wego.cstms.persistence.repositories;
 
-import com.wego.cstms.persistence.Entities.Course;
+import com.wego.cstms.persistence.Entities.CourseEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface CourseRepository extends CrudRepository<Course,Integer> {
+public interface CourseRepository extends CrudRepository<CourseEntity,Integer> {
 
-    @Query(value = "SELECT c FROM Course c ORDER BY c.views DESC")
-    List<Course> getTopAllTimes();
+    @Query(value = "SELECT c FROM CourseEntity c ORDER BY c.views DESC")
+    List<CourseEntity> getTopAllTimes();
 
 
     @Query(value = "SELECT CSR.id, CSR.name, CSR.created_at,CSR.updated_at, CSR.price, CSR.rating,CSR.description, CSR.prerequisite, CSR.views\n" +
@@ -18,7 +18,7 @@ public interface CourseRepository extends CrudRepository<Course,Integer> {
             "WHERE MONTH(EN.enrollment_date) = MONTH(CURRENT_DATE()) AND YEAR(EN.enrollment_date) = YEAR(CURRENT_DATE())\n" +
             "GROUP BY CSR.id\n" +
             "ORDER BY COUNT(EN.course_id) DESC;", nativeQuery = true)
-    List<Course> getTopTrending();
+    List<CourseEntity> getTopTrending();
 
 
 

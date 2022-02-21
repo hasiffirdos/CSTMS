@@ -39,7 +39,7 @@ public class StudentEntity extends UserEntity {
             inverseJoinColumns = @JoinColumn(name = "course_id")
 
     )
-    private List<Course> enrolledCourses = new ArrayList<>();
+    private List<CourseEntity> enrolledCourses = new ArrayList<>();
 
 //    @OneToOne
 //    @JoinColumn(name = "id", referencedColumnName = "id")

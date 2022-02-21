@@ -38,7 +38,7 @@ public class TeacherEntity extends UserEntity {
             inverseJoinColumns = @JoinColumn(name = "course_id")
 
     )
-    private List<Course> taughtCourses = new ArrayList<>();
+    private List<CourseEntity> taughtCourses = new ArrayList<>();
 
 //    @OneToOne
 //    @JoinColumn(name = "id", referencedColumnName = "id")

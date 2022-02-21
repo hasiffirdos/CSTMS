@@ -1,6 +1,6 @@
 package com.wego.cstms.dto.models;
 
-import com.wego.cstms.persistence.Entities.Course;
+import com.wego.cstms.persistence.Entities.CourseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -21,7 +21,7 @@ public class CourseContentDto {
 
 
     @ManyToOne
-    private Course course;
+    private CourseEntity course;
 
 }
 

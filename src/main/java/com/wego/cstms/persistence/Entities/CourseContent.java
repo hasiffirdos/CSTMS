@@ -29,7 +29,7 @@ public class CourseContent {
 
     @JsonIgnore
     @ManyToOne
-    private Course course;
+    private CourseEntity course;
 
 
 

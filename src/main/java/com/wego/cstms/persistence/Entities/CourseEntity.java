@@ -19,7 +19,7 @@ import java.util.List;
 //@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "courses")
-public class Course {
+public class CourseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
