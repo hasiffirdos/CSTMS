@@ -53,7 +53,6 @@ public class TeacherController {
     @RequestMapping(method = RequestMethod.POST, value = "/register-teacher")
 //    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public ResponseEntity<CustomResponse> registerTeacher(@RequestBody TeacherDto teacherDto) {
-        teacherService.addTeacher(teacherDto);
         try {
             return ResponseEntity.ok(
                     CustomResponse.builder()
@@ -65,7 +64,7 @@ public class TeacherController {
                     .badRequest()
                     .body(
                             CustomResponse.builder()
-                                    .payLoad(String.format("Duplicate Entry, User Already Exists with: %s", exception.getMessage()))
+                                    .errorMessage(exception.getMessage())
                                     .build()
                     );
         }
@@ -86,7 +85,7 @@ public class TeacherController {
                     .badRequest()
                     .body(
                             CustomResponse.builder()
-                                    .payLoad(String.format("Student with this Id:%d doesn't exist", teacherId))
+                                    .errorMessage(String.format("Student with this Id:%d doesn't exist", teacherId))
                                     .build()
                     );
         }
@@ -107,7 +106,7 @@ public class TeacherController {
                     .badRequest()
                     .body(
                             CustomResponse.builder()
-                                    .payLoad(String.format("Teacher with this Id:%d doesn't exist", teacherId))
+                                    .errorMessage(String.format("Teacher with this Id:%d doesn't exist", teacherId))
                                     .build()
                     );
         }
@@ -139,7 +138,7 @@ public class TeacherController {
                     .badRequest()
                     .body(
                             CustomResponse.builder()
-                                    .payLoad(exception.getMessage())
+                                    .errorMessage(exception.getMessage())
                                     .build()
                     );
         }
@@ -203,7 +202,7 @@ public class TeacherController {
         } catch (RuntimeException exception) {
             return ResponseEntity.badRequest().body(
                     CustomResponse.builder()
-                            .payLoad(exception.getMessage())
+                            .errorMessage(exception.getMessage())
                             .build());
         }
     }
@@ -222,7 +221,7 @@ public class TeacherController {
         } catch (RuntimeException exception) {
             return ResponseEntity.badRequest().body(
                     CustomResponse.builder()
-                            .payLoad(exception.getMessage())
+                            .errorMessage(exception.getMessage())
                             .build());
         }
     }

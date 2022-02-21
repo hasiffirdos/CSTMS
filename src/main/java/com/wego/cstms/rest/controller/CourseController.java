@@ -36,7 +36,7 @@ public class CourseController {
         try{
             return ResponseEntity.ok(CustomResponse.builder().payLoad(courseService.getCourse(courseId)).build());
         }catch (RuntimeException exception){
-            return ResponseEntity.badRequest().body(CustomResponse.builder().payLoad(exception.getMessage()).build());
+            return ResponseEntity.badRequest().body(CustomResponse.builder().errorMessage(exception.getMessage()).build());
         }
 
     }
@@ -48,7 +48,7 @@ public class CourseController {
         try{
             return ResponseEntity.ok(CustomResponse.builder().payLoad(courseService.deleteCourse(courseId)).build());
         }catch (RuntimeException exception){
-            return ResponseEntity.badRequest().body(CustomResponse.builder().payLoad(exception.getMessage()).build());
+            return ResponseEntity.badRequest().body(CustomResponse.builder().errorMessage(exception.getMessage()).build());
         }
     }
 
@@ -58,7 +58,7 @@ public class CourseController {
         try{
             return ResponseEntity.ok(CustomResponse.builder().payLoad(courseService.getRegisteredStudents(courseId)).build());
         }catch (RuntimeException exception){
-            return ResponseEntity.badRequest().body(CustomResponse.builder().payLoad(exception.getMessage()).build());
+            return ResponseEntity.badRequest().body(CustomResponse.builder().errorMessage(exception.getMessage()).build());
         }
     }
 

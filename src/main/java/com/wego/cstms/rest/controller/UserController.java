@@ -12,18 +12,15 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final AdminService adminService;
-    private final MSException msException;
 
 
-    public UserController(AdminService adminService, MSException msException) {
+    public UserController(AdminService adminService) {
         this.adminService = adminService;
-        this.msException = msException;
     }
 
     @RequestMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CustomResponse> getUsers() {
-//        msExcetion.EntityNotFoundException(EntityType.COURSE,2);
         return ResponseEntity.ok(
                 CustomResponse.builder()
                         .payLoad(adminService.getAllUsers())

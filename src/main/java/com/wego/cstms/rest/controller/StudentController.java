@@ -42,7 +42,7 @@ public class StudentController {
         try {
             return ResponseEntity.ok(CustomResponse.builder().payLoad(studentService.addStudent(studentDto)).build());
         } catch (RuntimeException exception) {
-            return ResponseEntity.badRequest().body(CustomResponse.builder().payLoad(String.format("Duplicate Entry, User Already Exists with: %s", exception.getMessage())).build());
+            return ResponseEntity.badRequest().body(CustomResponse.builder().errorMessage(String.format("Duplicate Entry, User Already Exists with: %s", exception.getMessage())).build());
         }
     }
 
@@ -56,7 +56,7 @@ public class StudentController {
             return ResponseEntity.ok(CustomResponse.builder().payLoad(studentDto).build());
         }
 
-        return ResponseEntity.badRequest().body(CustomResponse.builder().payLoad(String.format("Student with this Id:%d doesn't exist", studentId)).build());
+        return ResponseEntity.badRequest().body(CustomResponse.builder().errorMessage(String.format("Student with this Id:%d doesn't exist", studentId)).build());
 
     }
 
@@ -67,7 +67,7 @@ public class StudentController {
         if (deletedDone) {
             return ResponseEntity.ok(CustomResponse.builder().payLoad(String.format("user Deleted with Id: %d", studentId)).build());
         } else {
-            return ResponseEntity.badRequest().body(CustomResponse.builder().payLoad(String.format("Student with this Id:%d doesn't exist", studentId)).build());
+            return ResponseEntity.badRequest().body(CustomResponse.builder().errorMessage(String.format("Student with this Id:%d doesn't exist", studentId)).build());
         }
     }
 
@@ -79,7 +79,7 @@ public class StudentController {
             return ResponseEntity.ok(CustomResponse.builder().payLoad(studentService.addStudentCourse(studentId, courseId)).build());
 
         } catch (RuntimeException exception) {
-            return ResponseEntity.badRequest().body(CustomResponse.builder().payLoad(exception.getMessage()).build());
+            return ResponseEntity.badRequest().body(CustomResponse.builder().errorMessage(exception.getMessage()).build());
         }
     }
 
@@ -90,7 +90,7 @@ public class StudentController {
             return ResponseEntity.ok(CustomResponse.builder().payLoad(studentService.removeStudentCourse(studentId, courseId)).build());
 
         } catch (RuntimeException exception) {
-            return ResponseEntity.badRequest().body(CustomResponse.builder().payLoad(exception.getMessage()).build());
+            return ResponseEntity.badRequest().body(CustomResponse.builder().errorMessage(exception.getMessage()).build());
         }
     }
 
