@@ -79,7 +79,7 @@ public class TeacherService {
         if (teacherEntity != null) {
             teacherEntity.getTaughtCourses().add(CourseMapper.toCourse(courseDto));
             teacherRepository.save(teacherEntity);
-            return String.format("%s has been Added of Teacher: %s", courseDto.getName(), teacherEntity.getUserName());
+            return String.format("Course:\"%s\" has been Added of Teacher: %s", courseDto.getName(), teacherEntity.getUserName());
         }
         throw msException.EntityNotFoundException(EntityType.TEACHER,teacherId);
     }
