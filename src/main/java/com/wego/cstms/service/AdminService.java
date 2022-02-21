@@ -19,22 +19,16 @@ import java.util.List;
 public class AdminService {
 
 
-    private final UserRepository userRepository;
+
     private final MSException msException;
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AdminService(UserRepository userRepository, MSException msException, AdminRepository adminRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+    public AdminService(MSException msException, AdminRepository adminRepository, PasswordEncoder passwordEncoder) {
+
         this.msException = msException;
         this.adminRepository = adminRepository;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    public List<UserEntity> getAllUsers() {
-        List<UserEntity> userEntities = new ArrayList<>();
-        userRepository.findAll().forEach(userEntities::add);
-        return userEntities;
     }
 
     public List<AdminEntity> getAllAdmins() {

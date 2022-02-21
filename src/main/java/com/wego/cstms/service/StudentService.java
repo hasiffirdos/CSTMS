@@ -1,7 +1,9 @@
 package com.wego.cstms.service;
 
 
+import com.wego.cstms.dto.mapper.CourseMapper;
 import com.wego.cstms.dto.mapper.StudentMapper;
+import com.wego.cstms.dto.models.CourseDto;
 import com.wego.cstms.exceptions.EntityType;
 import com.wego.cstms.exceptions.MSException;
 import com.wego.cstms.persistence.Entities.CourseEntity;
@@ -20,14 +22,14 @@ import java.util.List;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final CourseRepository courseRepository;
+    private final CourseService courseService;
     private final PasswordEncoder passwordEncoder;
     private final MSException msException;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository, PasswordEncoder passwordEncoder, MSException msException) {
+    public StudentService(StudentRepository studentRepository, CourseService courseService, PasswordEncoder passwordEncoder, MSException msException) {
         this.studentRepository = studentRepository;
-        this.courseRepository = courseRepository;
+        this.courseService = courseService;
         this.passwordEncoder = passwordEncoder;
         this.msException = msException;
     }
@@ -59,7 +61,8 @@ public class StudentService {
 
     public String addStudentCourse(int studentId, int courseId) {
         StudentEntity studentEntity = studentRepository.findById(studentId).orElse(null);
-        CourseEntity courseEntity = courseRepository.findById(courseId).orElse(null);
+        CourseEntity courseEntity = CourseMapper.toCourse(courseService.getCourse(courseId));
+
         if (studentEntity != null) {
             if (courseEntity != null) {
                 studentEntity.getEnrolledCourses().add(courseEntity);
@@ -73,7 +76,7 @@ public class StudentService {
 
     public String removeStudentCourse(int studentId, int courseId) {
         StudentEntity studentEntity = studentRepository.findById(studentId).orElse(null);
-        CourseEntity courseEntity = courseRepository.findById(courseId).orElse(null);
+        CourseEntity courseEntity = CourseMapper.toCourse(courseService.getCourse(courseId));
         if (studentEntity != null) {
             if (courseEntity != null) {
                 studentEntity.getEnrolledCourses().remove(courseEntity);

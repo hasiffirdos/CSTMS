@@ -2,12 +2,12 @@ package com.wego.cstms.service;
 
 
 import com.wego.cstms.dto.mapper.CourseContentMapper;
+import com.wego.cstms.dto.mapper.CourseMapper;
 import com.wego.cstms.exceptions.EntityType;
 import com.wego.cstms.exceptions.MSException;
 import com.wego.cstms.persistence.Entities.CourseEntity;
 import com.wego.cstms.persistence.Entities.CourseContentEntity;
 import com.wego.cstms.persistence.repositories.CourseContentRepository;
-import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.dto.models.CourseContentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +20,13 @@ import java.util.Optional;
 public class ContentService {
 
     private final CourseContentRepository courseContentRepository;
-    private final CourseRepository courseRepository;
+    private final CourseService courseService;
     private final MSException msException;
 
     @Autowired
-    public ContentService(CourseContentRepository courseContentRepository, CourseRepository courseRepository, MSException msException) {
+    public ContentService(CourseContentRepository courseContentRepository, CourseService courseService, MSException msException) {
         this.courseContentRepository = courseContentRepository;
-        this.courseRepository = courseRepository;
+        this.courseService = courseService;
         this.msException = msException;
     }
 
@@ -47,24 +47,18 @@ public class ContentService {
 
 
     public CourseContentDto addCourseContent(CourseContentDto courseContentDto, int courseId) {
-        Optional<CourseEntity> course = courseRepository.findById(courseId);
-        if (course.isPresent()){
+        CourseEntity courseEntity = CourseMapper.toCourse(courseService.getCourse(courseId));
+        if (courseEntity!=null){
             CourseContentEntity courseContentEntity = CourseContentMapper.toCourseContent(courseContentDto);
-            courseContentEntity.setCourse(course.get());
+            courseContentEntity.setCourse(courseEntity);
             courseContentRepository.save(courseContentEntity);
             return courseContentDto;
         }
         throw msException.EntityNotFoundException(EntityType.COURSE,courseId);
 
     }
-//
-//    public void updateCourseContent(ContentDto contentDto) {
-//
-//        contentRepository.save(new Content(contentDto));
-//    }
-//
     public String deleteCourseContent(Integer courseId,Integer courseContentId) {
-        if (courseRepository.existsById(courseId)){
+        if (courseService.courseExists(courseId)){
             Optional<CourseContentEntity> courseContent = courseContentRepository.findById(courseId);
             if(courseContent.isPresent()){
                 courseContentRepository.deleteById(courseContentId);

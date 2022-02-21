@@ -62,6 +62,10 @@ public class CourseService {
         throw msException.EntityNotFoundException(EntityType.COURSE, id);
     }
 
+    public Boolean courseExists(Integer id) {
+        return courseRepository.existsById(id);
+    }
+
 //    public void addCourse(CourseDto courseDto) {
 //
 //        Course course = CourseMapper.toCourse(courseDto);

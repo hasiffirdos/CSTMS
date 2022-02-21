@@ -2,28 +2,30 @@ package com.wego.cstms.rest.controller;
 
 import com.wego.cstms.dto.response.CustomResponse;
 import com.wego.cstms.dto.models.AdminDto;
-import com.wego.cstms.exceptions.MSException;
 import com.wego.cstms.service.AdminService;
+import com.wego.cstms.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class UserController {
+public class AdminController {
 
     private final AdminService adminService;
+    private final UserService userService;
 
-
-    public UserController(AdminService adminService) {
+    public AdminController(AdminService adminService, UserService userService) {
         this.adminService = adminService;
+        this.userService = userService;
     }
+
 
     @RequestMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CustomResponse> getUsers() {
         return ResponseEntity.ok(
                 CustomResponse.builder()
-                        .payLoad(adminService.getAllUsers())
+                        .payLoad(userService.getAllUsers())
                         .build()
         );
     }
