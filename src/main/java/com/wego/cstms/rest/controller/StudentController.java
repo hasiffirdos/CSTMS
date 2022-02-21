@@ -108,11 +108,10 @@ public class StudentController {
 
     @GetMapping("/{studentId}/courses/{courseId}/course-content/{courseContentId}/file/Download/")
     @PreAuthorize("hasRole('ADMIN') or (hasRole('STUDENT') and  @principalSecurity.hasEnrolledCourse(authentication,#studentId,#courseId))")
-    public ResponseEntity<Resource> getFile(@PathVariable int studentId,
+    public ResponseEntity<Resource> downloadContentFile(@PathVariable int studentId,
                                             @PathVariable Integer courseId,
                                             @PathVariable int courseContentId) {
         String[] fileMeta = contentService.getDownloadPath(courseId, courseContentId);
-
         Resource file = minioService.downloadObject(fileMeta[1]);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment;filename=\"" + fileMeta[0] + "\"").body(file);

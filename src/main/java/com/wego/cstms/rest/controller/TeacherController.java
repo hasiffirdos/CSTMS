@@ -9,11 +9,15 @@ import com.wego.cstms.service.ContentService;
 import com.wego.cstms.service.CourseService;
 import com.wego.cstms.service.FilesStorageService;
 import com.wego.cstms.service.TeacherService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.Date;
 
 @RestController
@@ -166,16 +170,19 @@ public class TeacherController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/{teacherId}/courses/{courseId}/course-contents-file")
     @PreAuthorize("hasRole('ADMIN') or (hasRole('TEACHER') and  @principalSecurity.hasCourseOwnership(authentication,#teacherId,#courseId))")
-    public ResponseEntity<CustomResponse> addCourseContentWithFile(@RequestParam("file_name") String fileName,
-                                                                   @RequestParam("file_type") String fileType,
+    public ResponseEntity<CustomResponse> addCourseContentWithFile(
+//            @RequestParam("file_name") String fileName,
+//                                                                   @RequestParam("file_type") String fileType,
                                                                    @RequestParam("description") String description,
                                                                    @RequestParam("file") MultipartFile contentFile,
                                                                    @PathVariable Integer courseId,
                                                                    @PathVariable Integer teacherId) {
         String message = "";
+        String fileName = contentFile.getOriginalFilename();
+        String fileType = contentFile.getContentType();
         try {
 //            filesStorageService.save(contentFile, courseId);
-            message = minioService.putObject(contentFile, courseId.toString(), fileName, contentFile.getContentType());
+            message = minioService.putObject(contentFile, courseId.toString(), fileName,fileType);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -224,6 +231,18 @@ public class TeacherController {
                             .errorMessage(exception.getMessage())
                             .build());
         }
+    }
+
+    @GetMapping("/{teacherId}/courses/{courseId}/course-content/{courseContentId}/file/Download/")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEACHER') and  @principalSecurity.hasCourseOwnership(authentication,#teacherId,#courseId))")
+    public ResponseEntity<Resource> downloadContentFile(@PathVariable int teacherId,
+                                                        @PathVariable Integer courseId,
+                                                        @PathVariable int courseContentId) {
+        String[] fileMeta = contentService.getDownloadPath(courseId, courseContentId);
+        Resource file = minioService.downloadObject(fileMeta[1]);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment;filename=\"" + fileMeta[0] + "\"").body(file);
+
     }
 
 
