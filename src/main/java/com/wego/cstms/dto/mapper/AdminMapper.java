@@ -1,38 +1,36 @@
 package com.wego.cstms.dto.mapper;
 
 import com.wego.cstms.dto.models.AdminDto;
-import com.wego.cstms.dto.models.StudentDto;
-import com.wego.cstms.persistence.Entities.Admin;
-import com.wego.cstms.persistence.Entities.Student;
+import com.wego.cstms.persistence.Entities.AdminEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 
 public class AdminMapper {
-    public static AdminDto toAdminDto(Admin admin) {
+    public static AdminDto toAdminDto(AdminEntity adminEntity) {
         return new AdminDto()
-                .setFirstname(admin.getFirstname())
-                .setLastname(admin.getLastname())
-                .setEmail(admin.getEmail())
-                .setPhone(admin.getPhone())
-                .setDob(admin.getDob())
-                .setAge(admin.getAge());
+                .setFirstname(adminEntity.getFirstname())
+                .setLastname(adminEntity.getLastname())
+                .setEmail(adminEntity.getEmail())
+                .setPhone(adminEntity.getPhone())
+                .setDob(adminEntity.getDob())
+                .setAge(adminEntity.getAge());
     }
 
-    public static Admin toAdmin(AdminDto adminDto, PasswordEncoder passwordEncoder) {
-        Admin admin = new Admin();
-        admin.setFirstname(adminDto.getFirstname());
-        admin.setLastname(adminDto.getLastname());
-        admin.setEmail(adminDto.getEmail());
-        admin.setPhone(adminDto.getPhone());
-        admin.setDob(adminDto.getDob());
-        admin.setSignupDate(new Date());
-        admin.setAge(adminDto.getAge());
-        admin.setUserName(admin.getUserName());
-        admin.setPassword(passwordEncoder.encode(adminDto.getPassword()));
-        admin.setRole("ADMIN");
-        admin.setActive(true);
-        return admin;
+    public static AdminEntity toAdmin(AdminDto adminDto, PasswordEncoder passwordEncoder) {
+        AdminEntity adminEntity = new AdminEntity();
+        adminEntity.setFirstname(adminDto.getFirstname());
+        adminEntity.setLastname(adminDto.getLastname());
+        adminEntity.setEmail(adminDto.getEmail());
+        adminEntity.setPhone(adminDto.getPhone());
+        adminEntity.setDob(adminDto.getDob());
+        adminEntity.setSignupDate(new Date());
+        adminEntity.setAge(adminDto.getAge());
+        adminEntity.setUserName(adminEntity.getUserName());
+        adminEntity.setPassword(passwordEncoder.encode(adminDto.getPassword()));
+        adminEntity.setRole("ADMIN");
+        adminEntity.setActive(true);
+        return adminEntity;
     }
 }
 

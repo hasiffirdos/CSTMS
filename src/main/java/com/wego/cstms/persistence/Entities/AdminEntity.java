@@ -18,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 //@NoArgsConstructor
 @Table( name = "admins")
-public class Admin extends User{
+public class AdminEntity extends User{
 //    @Id
 //    private int    id;
 //    private String firstname;
