@@ -130,7 +130,6 @@ public class TeacherController {
     @RequestMapping(method = RequestMethod.POST, value = "/{teacherId}/courses")
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     public ResponseEntity<CustomResponse> addCourse(@RequestBody CourseDto courseDto, @PathVariable int teacherId) {
-        teacherService.addTeachersCourse(courseDto, teacherId);
         try {
             return ResponseEntity.ok(
                     CustomResponse.builder()
