@@ -50,8 +50,8 @@ public class TeacherService {
     public TeacherDto addTeacher(TeacherDto teacherDto) {
         Teacher teacher = TeacherMapper.toTeacher(teacherDto);
         Optional<Teacher> preTeacher = teacherRepository.findByUserName(teacherDto.getUsername());
-        if (!preTeacher.isPresent()) {
-            teacher.setUserName(teacher.getFirstname().concat(teacher.getLastname()));
+        if (preTeacher.isEmpty()) {
+            teacher.setUserName(teacherDto.getUsername());
             teacher.setPassword(passwordEncoder.encode(teacherDto.getPassword()));
             teacher.setRole("TEACHER");
             teacher.setActive(true);

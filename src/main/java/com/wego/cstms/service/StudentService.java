@@ -54,7 +54,7 @@ public class StudentService {
         Student student = StudentMapper.toStudent(studentDto);
         Optional<Student> preStudent = Optional.ofNullable(studentRepository.findByUserName(studentDto.getUsername()));
         if (!preStudent.isPresent()) {
-            student.setUserName(studentDto.getFirstname().concat(studentDto.getLastname()));
+            student.setUserName(studentDto.getUsername());
             student.setPassword(passwordEncoder.encode(studentDto.getPassword()));
             student.setRole("STUDENT");
             student.setActive(true);

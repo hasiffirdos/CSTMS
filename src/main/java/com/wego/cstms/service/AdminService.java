@@ -49,7 +49,7 @@ public class AdminService {
         Optional<Admin> preAdmin = Optional.ofNullable(adminRepository.findByUserName(adminDto.getUsername()));
         if (preAdmin.isEmpty()) {
             Admin admin = AdminMapper.toAdmin(adminDto);
-            admin.setUserName(adminDto.getFirstname() + adminDto.getLastname());
+            admin.setUserName(admin.getUserName());
             admin.setPassword(passwordEncoder.encode(adminDto.getPassword()));
             admin.setRole("ADMIN");
             admin.setActive(true);
