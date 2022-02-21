@@ -5,7 +5,7 @@ import com.wego.cstms.dto.mapper.StudentMapper;
 import com.wego.cstms.exceptions.EntityType;
 import com.wego.cstms.exceptions.MSException;
 import com.wego.cstms.persistence.Entities.Course;
-import com.wego.cstms.persistence.Entities.Student;
+import com.wego.cstms.persistence.Entities.StudentEntity;
 import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.persistence.repositories.StudentRepository;
 import com.wego.cstms.dto.models.StudentDto;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -41,9 +40,9 @@ public class StudentService {
     }
 
     public StudentDto getStudent(Integer id) {
-        Student student = studentRepository.findById(id).orElse(null);
-        if (student != null) {
-            return StudentMapper.toStudentDto(student);
+        StudentEntity studentEntity = studentRepository.findById(id).orElse(null);
+        if (studentEntity != null) {
+            return StudentMapper.toStudentDto(studentEntity);
         }
         throw msException.EntityNotFoundException(EntityType.STUDENT, id);
 
@@ -51,21 +50,21 @@ public class StudentService {
 
     public StudentDto addStudent(StudentDto studentDto) {
         if (!studentRepository.existsByUserName(studentDto.getUsername())) {
-            Student student = StudentMapper.toStudent(studentDto, passwordEncoder);
-            studentRepository.save(student);
+            StudentEntity studentEntity = StudentMapper.toStudent(studentDto, passwordEncoder);
+            studentRepository.save(studentEntity);
             return studentDto;
         }
         throw msException.EntityAlreadyExistsException(EntityType.STUDENT, studentDto.getUsername());
     }
 
     public String addStudentCourse(int studentId, int courseId) {
-        Student student = studentRepository.findById(studentId).orElse(null);
+        StudentEntity studentEntity = studentRepository.findById(studentId).orElse(null);
         Course course = courseRepository.findById(courseId).orElse(null);
-        if (student != null) {
+        if (studentEntity != null) {
             if (course != null) {
-                student.getEnrolledCourses().add(course);
-                studentRepository.save(student);
-                return String.format("%s has enrolled for Course:%s", student.getUserName(), course.getName());
+                studentEntity.getEnrolledCourses().add(course);
+                studentRepository.save(studentEntity);
+                return String.format("%s has enrolled for Course:%s", studentEntity.getUserName(), course.getName());
             }
             throw msException.EntityNotFoundException(EntityType.COURSE, courseId);
         }
@@ -73,21 +72,21 @@ public class StudentService {
     }
 
     public String removeStudentCourse(int studentId, int courseId) {
-        Student student = studentRepository.findById(studentId).orElse(null);
+        StudentEntity studentEntity = studentRepository.findById(studentId).orElse(null);
         Course course = courseRepository.findById(courseId).orElse(null);
-        if (student != null) {
+        if (studentEntity != null) {
             if (course != null) {
-                student.getEnrolledCourses().remove(course);
-                studentRepository.save(student);
-                return String.format("%s has optOut for Course:%s", student.getUserName(), course.getName());
+                studentEntity.getEnrolledCourses().remove(course);
+                studentRepository.save(studentEntity);
+                return String.format("%s has optOut for Course:%s", studentEntity.getUserName(), course.getName());
             }
             throw msException.EntityNotFoundException(EntityType.COURSE, courseId);
         }
         throw msException.EntityNotFoundException(EntityType.STUDENT, studentId);
     }
 
-    public void updateStudent(Student student) {
-        studentRepository.save(student);
+    public void updateStudent(StudentEntity studentEntity) {
+        studentRepository.save(studentEntity);
     }
 
     public Boolean deleteStudent(Integer id) {
@@ -99,9 +98,9 @@ public class StudentService {
     }
 
     public List<Course> getEnrolledCourses(int studentId) {
-        Student student = studentRepository.findById(studentId).orElse(null);
-        if (student != null) {
-            return student.getEnrolledCourses();
+        StudentEntity studentEntity = studentRepository.findById(studentId).orElse(null);
+        if (studentEntity != null) {
+            return studentEntity.getEnrolledCourses();
         }
         return null;
     }

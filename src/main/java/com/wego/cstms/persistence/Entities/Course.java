@@ -35,7 +35,7 @@ public class Course {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "enrolledCourses")
-    private List<Student> registeredStudents = new ArrayList<>();
+    private List<StudentEntity> registeredStudents = new ArrayList<>();
 
     @JsonIgnore
     @ManyToMany(mappedBy = "taughtCourses")

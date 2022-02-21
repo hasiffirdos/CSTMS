@@ -1,7 +1,7 @@
 package com.wego.cstms.security.principal;
 
 import com.wego.cstms.persistence.Entities.Course;
-import com.wego.cstms.persistence.Entities.Student;
+import com.wego.cstms.persistence.Entities.StudentEntity;
 import com.wego.cstms.persistence.Entities.Teacher;
 import com.wego.cstms.persistence.Entities.User;
 import com.wego.cstms.persistence.repositories.CourseRepository;
@@ -38,8 +38,8 @@ public class PrincipalCheckLayer {
 
     public boolean hasEnrolledCourse(Authentication authentication, int studentId, int courseId) {
         if (hasUserId(authentication, studentId)) {
-            Student student = studentRepository.findById(studentId).get();
-            for (Course Course : student.getEnrolledCourses()) {
+            StudentEntity studentEntity = studentRepository.findById(studentId).get();
+            for (Course Course : studentEntity.getEnrolledCourses()) {
                 if (Course.getId() == courseId) {
                     return true;
                 }

@@ -1,9 +1,7 @@
 package com.wego.cstms.dto.mapper;
 
 import com.wego.cstms.dto.models.CourseDto;
-import com.wego.cstms.dto.models.StudentDto;
 import com.wego.cstms.persistence.Entities.Course;
-import com.wego.cstms.persistence.Entities.Student;
 
 import java.util.Date;
 

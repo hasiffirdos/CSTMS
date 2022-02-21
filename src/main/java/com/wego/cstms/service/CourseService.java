@@ -7,7 +7,7 @@ import com.wego.cstms.dto.models.StudentDto;
 import com.wego.cstms.exceptions.EntityType;
 import com.wego.cstms.exceptions.MSException;
 import com.wego.cstms.persistence.Entities.Course;
-import com.wego.cstms.persistence.Entities.Student;
+import com.wego.cstms.persistence.Entities.StudentEntity;
 import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.dto.models.CourseDto;
 import org.springframework.stereotype.Service;
@@ -87,9 +87,9 @@ public class CourseService {
         Optional<Course> course = courseRepository.findById(courseId);
         if (course.isPresent()) {
             List<StudentDto> studentDtos = new ArrayList<>();
-            List<Student> students = course.get().getRegisteredStudents();
-            if (students.size() > 0) {
-                students.forEach(s -> {
+            List<StudentEntity> studentEntities = course.get().getRegisteredStudents();
+            if (studentEntities.size() > 0) {
+                studentEntities.forEach(s -> {
                     studentDtos.add(StudentMapper.toStudentDto(s));
                 });
                 return studentDtos;

@@ -1,8 +1,6 @@
 package com.wego.cstms.dto.mapper;
 
-import com.wego.cstms.dto.models.StudentDto;
 import com.wego.cstms.dto.models.TeacherDto;
-import com.wego.cstms.persistence.Entities.Student;
 import com.wego.cstms.persistence.Entities.Teacher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

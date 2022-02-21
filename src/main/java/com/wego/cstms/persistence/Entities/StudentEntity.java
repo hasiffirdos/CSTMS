@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "students")
-public class Student extends User{
+public class StudentEntity extends User{
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private int    id;
