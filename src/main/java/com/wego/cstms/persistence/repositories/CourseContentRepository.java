@@ -1,12 +1,12 @@
 package com.wego.cstms.persistence.repositories;
 
-import com.wego.cstms.persistence.Entities.CourseContent;
+import com.wego.cstms.persistence.Entities.CourseContentEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface CourseContentRepository extends CrudRepository<CourseContent, Integer> {
+public interface CourseContentRepository extends CrudRepository<CourseContentEntity, Integer> {
 
-     List<CourseContent> findByCourseId(Integer courseId);
+     List<CourseContentEntity> findByCourseId(Integer courseId);
 
 }

@@ -5,7 +5,7 @@ import com.wego.cstms.dto.mapper.CourseContentMapper;
 import com.wego.cstms.exceptions.EntityType;
 import com.wego.cstms.exceptions.MSException;
 import com.wego.cstms.persistence.Entities.CourseEntity;
-import com.wego.cstms.persistence.Entities.CourseContent;
+import com.wego.cstms.persistence.Entities.CourseContentEntity;
 import com.wego.cstms.persistence.repositories.CourseContentRepository;
 import com.wego.cstms.persistence.repositories.CourseRepository;
 import com.wego.cstms.dto.models.CourseContentDto;
@@ -32,15 +32,15 @@ public class ContentService {
 
     public List<CourseContentDto> getCoursesAllContents(int id) {
         List<CourseContentDto> courseContents = new ArrayList<>();
-        courseContentRepository.findByCourseId(id).forEach(courseContent -> {
-            courseContents.add(CourseContentMapper.toCourseContentDto(courseContent));
+        courseContentRepository.findByCourseId(id).forEach(courseContentEntity -> {
+            courseContents.add(CourseContentMapper.toCourseContentDto(courseContentEntity));
         });
         return courseContents;
     }
 
     public String[] getDownloadPath(int courseId, int contentId){
-        CourseContent courseContent = courseContentRepository.findById(contentId).get();
-        String filename = courseContent.getFilename();
+        CourseContentEntity courseContentEntity = courseContentRepository.findById(contentId).get();
+        String filename = courseContentEntity.getFilename();
         String filepath = courseId+"/"+filename;
         return new String[]{filename, filepath};
     }
@@ -49,9 +49,9 @@ public class ContentService {
     public CourseContentDto addCourseContent(CourseContentDto courseContentDto, int courseId) {
         Optional<CourseEntity> course = courseRepository.findById(courseId);
         if (course.isPresent()){
-            CourseContent courseContent = CourseContentMapper.toCourseContent(courseContentDto);
-            courseContent.setCourse(course.get());
-            courseContentRepository.save(courseContent);
+            CourseContentEntity courseContentEntity = CourseContentMapper.toCourseContent(courseContentDto);
+            courseContentEntity.setCourse(course.get());
+            courseContentRepository.save(courseContentEntity);
             return courseContentDto;
         }
         throw msException.EntityNotFoundException(EntityType.COURSE,courseId);
@@ -65,7 +65,7 @@ public class ContentService {
 //
     public String deleteCourseContent(Integer courseId,Integer courseContentId) {
         if (courseRepository.existsById(courseId)){
-            Optional<CourseContent> courseContent = courseContentRepository.findById(courseId);
+            Optional<CourseContentEntity> courseContent = courseContentRepository.findById(courseId);
             if(courseContent.isPresent()){
                 courseContentRepository.deleteById(courseContentId);
                 return String.format("Course Content:%s Deleted Successfully",courseContent.get().getFilename());
