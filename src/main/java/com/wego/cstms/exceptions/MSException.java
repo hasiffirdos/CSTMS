@@ -17,7 +17,7 @@ public class MSException extends Exception{
     }
 
     public RuntimeException EntityAlreadyExistsException(EntityType entityType, String username){
-        String exceptionMessage = exceptionMessageBuilder.getExceptionMessage(entityType,ExceptionType.ENTITY_NOT_FOUND,username);
+        String exceptionMessage = exceptionMessageBuilder.getExceptionMessage(entityType,ExceptionType.DUPLICATE_ENTITY,username);
         throw new RuntimeException(exceptionMessage);
     }
 
